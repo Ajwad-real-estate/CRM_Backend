@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import registerRoute from "../routes/auth/register.js";
+import loginRoute from "../routes/auth/login.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,6 +15,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", registerRoute);
+app.use("/api/auth", loginRoute);
 
 app.all("*", (req, res) => {
   res.status(404);
