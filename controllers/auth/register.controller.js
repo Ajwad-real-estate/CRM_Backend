@@ -1,7 +1,7 @@
 import { getPool } from "../../configs/dbConfig.js";
 import bcrypt from "bcryptjs";
 
-export const handleRegister = async (req, res) => {
+const handleRegister = async (req, res) => {
   const {
     username,
     email,
@@ -109,3 +109,5 @@ export const handleRegister = async (req, res) => {
     res.status(500).json({ message: "Internal server error." });
   }
 };
+
+export default handleRegister;

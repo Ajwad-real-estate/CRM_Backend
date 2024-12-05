@@ -5,7 +5,7 @@ import {
   generateRefreshToken,
 } from "../../utils/authUtils.js";
 
-export const handleLogin = async (req, res) => {
+const handleLogin = async (req, res) => {
   const { identifier, password } = req.body;
 
   if (!identifier || !password)
@@ -72,3 +72,5 @@ export const handleLogin = async (req, res) => {
     res.status(500).json({ message: "Internal server error." });
   }
 };
+
+export default handleLogin;

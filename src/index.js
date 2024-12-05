@@ -3,6 +3,7 @@ import cors from "cors";
 import registerRoute from "../routes/auth/register.js";
 import loginRoute from "../routes/auth/login.js";
 import refreshTokenRoute from "../routes/auth/token.js";
+import logoutRoute from "../routes/auth/logout.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", registerRoute);
 app.use("/api/auth", loginRoute);
 app.use("/api/auth", refreshTokenRoute);
+app.use("/api/auth", logoutRoute);
 
 app.all("*", (req, res) => {
   res.status(404);
