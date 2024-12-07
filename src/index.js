@@ -1,35 +1,14 @@
-import express from "express";
-import cors from "cors";
-import registerRoute from "../routes/auth/register.js";
-import loginRoute from "../routes/auth/login.js";
-import refreshTokenRoute from "../routes/auth/token.js";
-import logoutRoute from "../routes/auth/logout.js";
+import { Router } from "express";
+import authRoutes from "./routes/auth/index.js";
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const router = Router();
 
-app.use(cors());
-
-app.use(express.json());
-
-app.get("/", (req, res) => {
+// Base route
+router.get("/", (req, res) => {
   res.send("Welcome to the CRM API.");
 });
 
-app.use("/api/auth", registerRoute);
-app.use("/api/auth", loginRoute);
-app.use("/api/auth", refreshTokenRoute);
-app.use("/api/auth", logoutRoute);
+// Auth routes
+router.use("/auth", authRoutes);
 
-app.all("*", (req, res) => {
-  res.status(404);
-  if (req.accepts("json")) {
-    res.json({ error: "404 Not Found" });
-  } else {
-    res.type("txt").send("404 Not Found");
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`RUNNING ON PORT: ${PORT}`);
-});
+export default router;
