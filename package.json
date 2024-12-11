@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start:dev": "nodemon index.js",
+    "dev": "nodemon index.js",
     "start": "node index.js"
   },
   "dependencies": {
