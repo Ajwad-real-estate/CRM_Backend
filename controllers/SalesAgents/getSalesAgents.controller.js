@@ -17,10 +17,23 @@ const getSalesAgents = async (req, res) => {
     //   FROM agent
     //   WHERE role_id = 'sales'; -- Assuming 'sales' represents sales agents
     // `;
-    const agentsQuery = `SELECT * FROM agent;`;
+    // const agentsQuery = `SELECT id,name, role_id,status FROM agent;`;
+    const agentsQuery = `
+    SELECT
+    agent.id,
+    agent.name,
+    role.title,
+    agent.status
+FROM
+    agent
+JOIN
+    role
+ON
+    agent.role_id = role.id
+WHERE
+    role.title = 'Sales Agent'`;
     const { rows: agents } = await pool.query(agentsQuery);
     console.log(agents)
-
     // Respond with the sales agents' details
     res.status(200).json({ agents });
   } catch (error) {

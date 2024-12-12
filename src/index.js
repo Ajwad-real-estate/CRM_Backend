@@ -1,6 +1,6 @@
 import { Router } from "express";
 import authRoutes from "./routes/auth/index.js";
-import getSalesAgents from "../controllers/getSalesAgents/getSalesAgents.controller.js";
+import getSalesAgents from "../controllers/SalesAgents/getSalesAgents.controller.js";
 
 const router = Router();
 
@@ -11,6 +11,7 @@ router.get("/", (req, res) => {
 
 // Auth routes
 router.use("/auth", authRoutes);
-router.use("/data", getSalesAgents);
+router.use("/data", getSalesAgents);// need it make it authorized to manager only?
+
 
 export default router;
