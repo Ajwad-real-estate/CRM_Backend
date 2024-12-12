@@ -7,22 +7,26 @@ const createSalesAccount = async (req, res) => {
 
     try {
         // Extract data from the request body, including the 'street' field
-        const { name, status, roleId, cityId, street } = req.body;
+        const { name, status, roleId } = req.body;
 
         // Validate the input
-        if (!name || !roleId || !cityId || !street) {  // Ensure street is provided
-            return res.status(400).json({ message: "Name, Role ID, and  are required." });
+        console.log(roleId)
+        if (!roleId ) {  // Ensure street is provided
+            return res.status(400).json({ message: " Role ID are required." });
+        }
+        if (!name  ) {  // Ensure street is provided
+            return res.status(400).json({ message: "Name are required." });
         }
 
         // Insert query to create a new sales account
         const createQuery = `
       INSERT INTO agent (name, role_id, status)
-      VALUES ($1, $2, $3, $4, $5)
+      VALUES ($1, $2, $3)
       RETURNING *;
     `;
 
         // Execute the query
-        const { rows: newAgent } = await pool.query(createQuery, [name, roleId, status || "active", cityId, street]);
+        const { rows: newAgent } = await pool.query(createQuery, [name, roleId, status || "active"]);
 
         console.log("New Sales Agent Created:", newAgent[0]);
 
