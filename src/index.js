@@ -1,5 +1,6 @@
 import { Router } from "express";
 import authRoutes from "./routes/auth/index.js";
+import getSalesAgents from "../controllers/getSalesAgents/getSalesAgents.controller.js";
 
 const router = Router();
 
@@ -10,5 +11,6 @@ router.get("/", (req, res) => {
 
 // Auth routes
 router.use("/auth", authRoutes);
+router.use("/data", getSalesAgents);
 
 export default router;
