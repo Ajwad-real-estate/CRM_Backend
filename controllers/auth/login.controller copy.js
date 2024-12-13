@@ -38,22 +38,13 @@ const handleLogin = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Wrong password." });
     }
-    // // Fetch the agent role using its id
-    // const agentDetailsQuery = `
-    //   SELECT role_id, name FROM agent WHERE id = $1;
-    // `;
-    // const { rows: agents } = await pool.query(agentDetailsQuery, [agentId]);
-    // // console.log({ rows: agents })
-    // if (agents.length < 1) {
-    //   return res.status(404).json({ message: "Agent not found." });
-    // }
-    // const { role_id: roleId, name: agentName } = agents[0];
-    // // console.log(agents);
-    // const roleId= 'yousef'
-    // const agentName = 'yousef eslam'
-    // Generate tokens based on the agent details
+
+		const {rows : role} = await pool.query('select title from role  join agent on role_id = role.id where agent.id = $1;', [agentId]);
+    console.log(role);
+
+
     const userPayload = { username, agentId
-      , roleId, agentName 
+      , role, agentName 
     };
     // console.log(userPayload)
     const accessToken = generateAccessToken(userPayload);
