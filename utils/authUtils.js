@@ -15,6 +15,7 @@ export function generateRefreshToken(user) {
 export function verifyRefreshToken(refreshToken) {
   return new Promise((resolve, reject) => {
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+      console.log('verifyRefreshToken')
       if (err) return reject(err);
       const accessToken = generateAccessToken(user);
       resolve(accessToken);
@@ -25,7 +26,9 @@ export function verifyRefreshToken(refreshToken) {
 export function verifyAccessToken(accessToken) {
   return new Promise((resolve, reject) => {
     jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+      console.log('verifyAccessToken')
       if (err) return reject(err);
+      console.log(user)
       resolve(user);
     });
   });

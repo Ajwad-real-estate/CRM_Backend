@@ -5,7 +5,10 @@ import routes from "./src/index.js";
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173', // Replace with your frontend's URL during production
+  credentials: true, // Allow cookies and other credentials
+}));
 app.use(express.json());
 
 // API routes
