@@ -1,7 +1,7 @@
 import { getPool } from "../../configs/dbConfig.js";
 
 const getSalesAgents = async (req, res) => {
-  console.log("sales")
+  console.log("getSalesAgentsFun")
   const pool = await getPool();
 
   try {
@@ -31,7 +31,7 @@ JOIN
 ON
     agent.role_id = role.id
 WHERE
-    role.title = 'Sales Agent'`;
+    role.title IN ('Sales Agent', 'Senior Sales Agent','Intern','Field Sales Agent','Online Sales Specialist')`;
     const { rows: agents } = await pool.query(agentsQuery);
     console.log(agents)
     // Respond with the sales agents' details
