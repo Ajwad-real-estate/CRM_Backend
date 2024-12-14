@@ -5,7 +5,12 @@ import authorizeUser from "../middlewares/authorizeUser.js";
 import dashboardRoute from "./routes/dashboard.js";
 import getSalesAgentsRoute from "./routes/SalesAgents/getSalesAgentsDataRoute.js";
 import createSalesAccountRoute from "./routes/SalesAgents/createSalesAccountRoute.js";
+<<<<<<< HEAD
 // import userData from "./routes/SalesAgents/userData.js"
+=======
+import clientRoutes from "./routes/clients/index.js";
+
+>>>>>>> origin/main
 const router = Router();
 
 // Base route
@@ -18,5 +23,9 @@ router.use("/auth", authRoutes);
 router.use(dashboardRoute);
 router.use(getSalesAgentsRoute);
 router.use(createSalesAccountRoute);
+<<<<<<< HEAD
 // router.use(userData);
+=======
+router.use("/clients", clientRoutes);
+>>>>>>> origin/main
 export default router;
