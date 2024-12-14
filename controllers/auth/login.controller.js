@@ -7,7 +7,7 @@ import {
 
 const handleLogin = async (req, res) => {
   const { identifier, password } = req.body;
-	console.log(identifier, password);
+  console.log(identifier, password);
 
   if (!identifier || !password)
     return res.status(400).json({ message: "All fields are required." });
@@ -32,7 +32,7 @@ const handleLogin = async (req, res) => {
       agent_id: agentId,
       password: hashedPassword,
     } = accounts[0];
-		// console.log(agentId);
+    // console.log(agentId);
 
     // Verify the provided password with the hashed password from the database
     const isPasswordValid = await bcrypt.compare(password, hashedPassword);
@@ -43,15 +43,18 @@ const handleLogin = async (req, res) => {
 
     // Fetch the agent role using it's id
     const agentDetailsQuery = `
-      select title from role join agent on role_id = role.id where agent.id = $1;
+      select title,role.id from role join agent on role_id = role.id where agent.id = $1;
     `;
     const { rows: agents } = await pool.query(agentDetailsQuery, [agentId]);
-
-    const { title : role } = agents[0];
+    // console.log(agents)
+    const { title: role
+      , id: roleId
+    } = agents[0];
     // console.log(role);
 
     // Generate tokens based on the agent details
-    const userPayload = { username, agentId, role };
+    const userPayload = { username, agentId, role, roleId };
+    console.log(userPayload)
 
     const accessToken = generateAccessToken(userPayload);
     const refreshToken = generateRefreshToken(userPayload);
@@ -68,10 +71,13 @@ const handleLogin = async (req, res) => {
     // Response with the user tokens
     res
       .status(200)
-      .json({ accessToken: accessToken, refreshToken: refreshToken });
+      .json({
+        accessToken: accessToken, refreshToken: refreshToken
+        , user: userPayload
+      });
   } catch (error) {
     console.error("Error during user login:", error);
-    res.status(500).json({ message: "Internal server error." });
+    res.status(500).json({ message: "Internal server error. Please Contact IT Department" });
   }
 };
 
