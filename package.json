@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start:dev": "nodemon app.js",
-    "dev": "nodemon app.js",
-    "start": "node app.js"
+    "start:dev": "nodemon index.js",
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
