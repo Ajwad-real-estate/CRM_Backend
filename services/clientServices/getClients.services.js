@@ -3,7 +3,7 @@ import { getPool } from "../../configs/dbConfig.js";
 export const getClientsService = async (user) => {
   const pool = await getPool();
 
-  const { role, id: agentId } = user;
+  const { role, agentId: agentId } = user;
   console.log("user from getClientsService" + user)
   try {
     if (role === "Sales Manager") {
