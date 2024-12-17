@@ -23,26 +23,26 @@ const getManagerDashboard = async (req, res) => {
 
 		// today task
      
-		const followUpQuery = `select count(*) from task where agent_id = $1 and type = 'Follow-Up';`;
+		const followUpQuery = `select count(*) from task where type = 'Follow-Up';`;
 		const followUpTasks = await pool.query(followUpQuery, [agentId]);
 		const followUpCount = parseInt(followUpTasks.rows[0].count, 10);
 
 		// console.log(followUpCount);
 
-		const meetingQuery = `select count(*) from task where agent_id = $1 and type = 'Meeting';`;
+		const meetingQuery = `select count(*) from task where type = 'Meeting';`;
 		const meetingTasks = await pool.query(meetingQuery, [agentId]);
 		const meetingCount = parseInt(meetingTasks.rows[0].count, 10);
 
 		// console.log(meetingCount);
 
-		const callQuery = `select count(*) from task where agent_id = $1 and type = 'Call';`;
+		const callQuery = `select count(*) from task where and type = 'Call';`;
 		const callTasks = await pool.query(callQuery, [agentId]);
 		const callCount = parseInt(callTasks.rows[0].count, 10);
 
 		// console.log(callCount);
 
 		
-		const emailQuery = `select count(*) from task where agent_id = $1 and type = 'Email';`;
+		const emailQuery = `select count(*) from task where and type = 'Email';`;
 		const emailTasks = await pool.query(emailQuery, [agentId]);
 		const emailCount = parseInt(emailTasks.rows[0].count, 10);
 
@@ -50,21 +50,28 @@ const getManagerDashboard = async (req, res) => {
 
 
 		// new clients
-    const newClientsQuery =` select count(*) from client where agent_id = $1 and status = 'new';`;
+    const newClientsQuery =` select count(*) from client where agent_id is null and status = 'new';`;
 		const newClients = await pool.query(newClientsQuery, [agentId]);
 		const newClientsCount = parseInt(newClients.rows[0].count, 10);
 
 		// console.log(newClientsCount);
 
+
+		// new assigend clients
+				// new clients
+				const newAssignedClientsQuery =` select count(*) from client where agent_id is null and status = 'new';`;
+				const newAssignedClients = await pool.query(newAssignedClientsQuery, [agentId]);
+				const newAssignedClientsCount = parseInt(newAssignedClients.rows[0].count, 10);
+
 		// qualified clients
-		const qualifiedClientsQuery =` select count(*) from client where agent_id = $1 and status = 'qualified';`;
+		const qualifiedClientsQuery =` select count(*) from client where status = 'qualified';`;
 		const qualifiedClients = await pool.query(qualifiedClientsQuery, [agentId]);
 		const qualifiedClientsCount = parseInt(qualifiedClients.rows[0].count, 10);
 		// console.log(qualifiedClientsCount);
 	
 
 		// reserved clients
-		const reservedClientsQuery =` select count(*) from client where agent_id = $1 and status = 'reserved';`;
+		const reservedClientsQuery =` select count(*) from client where status = 'reserved';`;
 		const reservedClients = await pool.query(reservedClientsQuery, [agentId]);
 		const reservedClientsCount = parseInt(reservedClients.rows[0].count, 10);
 
@@ -72,7 +79,7 @@ const getManagerDashboard = async (req, res) => {
 
 
 			// reserved clients
-			const doneClientsQuery =` select count(*) from client where agent_id = $1 and status = 'done_deal';`;
+			const doneClientsQuery =` select count(*) from client where and status = 'done_deal';`;
 			const doneClients = await pool.query(doneClientsQuery, [agentId]);
 			const doneClientsCount = parseInt(doneClients.rows[0].count, 10);
 
@@ -87,6 +94,7 @@ const getManagerDashboard = async (req, res) => {
 			callCount : callCount,
 			emailCount: emailCount,
 			newClientsCount : newClientsCount,
+			newAssignedClientsCount: newAssignedClientsCount,
 			qualifiedClientsCount : qualifiedClientsCount,
 			reservedClientsCount: reservedClientsCount,
 			doneClientsCount : doneClientsCount

@@ -5,7 +5,7 @@ import authorizeUser from "../middlewares/authorizeUser.js";
 import dashboardRoute from "./dashboard.js";
 import getSalesAgentsRoute from "./SalesAgents/getSalesAgentsDataRoute.js";
 import createSalesAccountRoute from "./SalesAgents/createSalesAccountRoute.js";
-
+import taskRoute from "./task.js";
 import clientRoutes from "./clients/index.js";
 
 const router = Router();
@@ -19,6 +19,7 @@ router.get("/", (req, res) => {
 router.use("/clients", clientRoutes);
 router.use("/auth", authRoutes);
 router.use(dashboardRoute);
+router.use(taskRoute);
 router.use(getSalesAgentsRoute);
 router.use(createSalesAccountRoute);
 // router.use(userData);
