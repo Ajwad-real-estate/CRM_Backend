@@ -1,5 +1,5 @@
 import { Router } from "express";
-import deleteClientById from "../../../controllers/clients/deleteClientById.controller.js";
+import deleteClientById from "../../controllers/clients/deleteClientById.controller.js";
 
 const router = Router();
 

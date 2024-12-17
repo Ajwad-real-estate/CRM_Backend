@@ -1,6 +1,6 @@
 import { Router } from "express";
-import authorizeUser from "../../../middlewares/authorizeUser.js";
-import authorizeManager from "../../../middlewares/authorizeManager.js";
+// import authorizeUser from "../../middlewares/authorizeUser.js";
+// import authorizeManager from "../../middlewares/authorizeManager.js";
 import createSingle from "./createClient.js";
 import createMultiple from "./createClients.js";
 import getClients from "./getClients.js";
@@ -9,7 +9,7 @@ import deleteClient from "./deleteClient.js";
 
 const router = Router();
 
-router.use(authorizeUser);
+// router.use(authorizeUser);
 
 router.use(
     // authorizeManager
