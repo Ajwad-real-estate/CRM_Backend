@@ -1,5 +1,5 @@
 // import { Router } from "express";
-// import userData from "../../../controllers/SalesAgents/userData.controller.js";
+// import userData from "../../controllers/SalesAgents/userData.controller.js";
 
 // const router = Router();
 
