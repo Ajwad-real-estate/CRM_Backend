@@ -11,12 +11,36 @@ export const getClientsService = async (user) => {
       const { rows } = await pool.query(getAllClients);
 
       return rows;
-      
+
     } else {
-      const getAgentClients = `SELECT * FROM client WHERE agent_id = $1`;
-      //SELECT * FROM client WHERE agent_id = b23a934a-afd6-4427-8e5d-1cdf50d03eb2
+      // const getAgentClients = `SELECT * FROM client WHERE agent_id = $1`;
+      //     const getAgentClients = ` SELECT 
+      //   c.*, 
+      //   cp.phone_number
+      // FROM 
+      //   client c
+      // LEFT JOIN 
+      //   client_phone cp
+      // ON 
+      //   c.id = cp.client_id
+      // WHERE 
+      //   c.agent_id = $1`;
+      const getAgentClients = `SELECT 
+    c.*, 
+    array_agg(cp.phone_number) AS phone_numbers
+FROM 
+    client c
+LEFT JOIN 
+    client_phone cp
+ON 
+    c.id = cp.client_id
+WHERE 
+    c.agent_id = $1
+GROUP BY 
+    c.id;`;
+
       const { rows } = await pool.query(getAgentClients, [agentId]);
-console.log(rows)
+      console.log(rows)
       return rows;
     }
   } catch (error) {
