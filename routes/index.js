@@ -1,12 +1,12 @@
 import { Router } from "express";
-import authRoutes from "./routes/auth/index.js";
+import authRoutes from "./auth/index.js";
 
 import authorizeUser from "../middlewares/authorizeUser.js";
-import dashboardRoute from "./routes/dashboard.js";
-import getSalesAgentsRoute from "./routes/SalesAgents/getSalesAgentsDataRoute.js";
-import createSalesAccountRoute from "./routes/SalesAgents/createSalesAccountRoute.js";
+import dashboardRoute from "./dashboard.js";
+import getSalesAgentsRoute from "./SalesAgents/getSalesAgentsDataRoute.js";
+import createSalesAccountRoute from "./SalesAgents/createSalesAccountRoute.js";
 
-import clientRoutes from "./routes/clients/index.js";
+import clientRoutes from "./clients/index.js";
 
 const router = Router();
 
