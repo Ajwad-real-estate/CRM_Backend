@@ -6,7 +6,7 @@ const getClients = async (req, res) => {
     const user = req.user;
     console.log(
       "yousef" +
-      user 
+      user
     )
     const clients = await getClientsService(user);
 
