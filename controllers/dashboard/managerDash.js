@@ -21,30 +21,29 @@ const getManagerDashboard = async (req, res) => {
 		const target = parseInt(targetResult.rows[0].target, 10);
 		// console.log(target);
 
-		// today task
      
-		const followUpQuery = `select count(*) from task where type = 'Follow-Up';`;
-		const followUpTasks = await pool.query(followUpQuery, [agentId]);
-		const followUpCount = parseInt(followUpTasks.rows[0].count, 10);
+		const followUpQuery = `select count(*) from action where type = 'Follow-Up';`;
+		const followUpActions = await pool.query(followUpQuery, [agentId]);
+		const followUpCount = parseInt(followUpActions.rows[0].count, 10);
 
 		// console.log(followUpCount);
 
-		const meetingQuery = `select count(*) from task where type = 'Meeting';`;
-		const meetingTasks = await pool.query(meetingQuery, [agentId]);
-		const meetingCount = parseInt(meetingTasks.rows[0].count, 10);
+		const meetingQuery = `select count(*) from action where type = 'Meeting';`;
+		const meetingActions = await pool.query(meetingQuery, [agentId]);
+		const meetingCount = parseInt(meetingActions.rows[0].count, 10);
 
 		// console.log(meetingCount);
 
-		const callQuery = `select count(*) from task where and type = 'Call';`;
-		const callTasks = await pool.query(callQuery, [agentId]);
-		const callCount = parseInt(callTasks.rows[0].count, 10);
+		const followMeetQuery = `select count(*) from action where and type = 'Follow-Up After Meeting';`;
+		const followMeetActions = await pool.query(followMeetQuery, [agentId]);
+		const followMeetCount = parseInt(followMeetActions.rows[0].count, 10);
 
-		// console.log(callCount);
+		// console.log(followMeetCount);
 
 		
 		const emailQuery = `select count(*) from task where and type = 'Email';`;
-		const emailTasks = await pool.query(emailQuery, [agentId]);
-		const emailCount = parseInt(emailTasks.rows[0].count, 10);
+		const emailActions = await pool.query(emailQuery, [agentId]);
+		const emailCount = parseInt(emailActions.rows[0].count, 10);
 
 		// console.log(emailCount);
 
@@ -91,7 +90,7 @@ const getManagerDashboard = async (req, res) => {
 			target: target,
 			followUpCount : followUpCount,
 			meetingCount: meetingCount,
-			callCount : callCount,
+			followMeetCount : followMeetCount,
 			emailCount: emailCount,
 			newClientsCount : newClientsCount,
 			newAssignedClientsCount: newAssignedClientsCount,

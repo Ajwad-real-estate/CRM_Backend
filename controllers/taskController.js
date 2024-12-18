@@ -43,13 +43,10 @@ const getAllTasks = async (req, res) => {
 const addNewTask = async (req, res) => {
   const {
 		agent_id = req.user.agentId,
-    client_id = null,
-    unit_id = null,
-    project_id = null,
-    type = null,
+    title = null,
+		detail = null,
     status = null,
-    location = null,
-    comment = null,
+    priority_level = null,
 		date,
 		time = null
   } = req.body;
@@ -58,18 +55,15 @@ const addNewTask = async (req, res) => {
     // const pool = await getPool();
 
     const newTaskQuery = `
-      INSERT INTO task (agent_id, client_id, unit_id, project_id, type, status, location, comment, date, time)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`;
+      INSERT INTO task (agent_id, title, status, priority_level, detail, date, time)
+      VALUES ($1, $2, $3, $4, $5, $6, $7);`;
 
     const values = [
       agent_id,
-      client_id,
-      unit_id,
-      project_id,
-      type,
+      title,
       status,
-      location,
-      comment,
+      priority_level,
+      detail,
 			date,
 			time
     ];
