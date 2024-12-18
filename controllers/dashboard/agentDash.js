@@ -25,28 +25,28 @@ const getAgentDashboard =  async (req, res) => {
 
 		// today task
      
-		const followUpQuery = `select count(*) from task where agent_id = $1 and type = 'Follow-Up';`;
-		const followUpActions = await pool.query(followUpQuery, [agentId]);
-		const followUpCount = parseInt(followUpActions.rows[0].count, 10);
+		// const followUpQuery = `select count(*) from task where agent_id = $1 and type = 'Follow-Up';`;
+		// const followUpActions = await pool.query(followUpQuery, [agentId]);
+		// const followUpCount = parseInt(followUpActions.rows[0].count, 10);
 
 		// console.log(followUpCount);
 
-		const meetingQuery = `select count(*) from task where agent_id = $1 and type = 'Meeting';`;
-		const meetingActions = await pool.query(meetingQuery, [agentId]);
-		const meetingCount = parseInt(meetingActions.rows[0].count, 10);
+		// const meetingQuery = `select count(*) from task where agent_id = $1 and type = 'Meeting';`;
+		// const meetingActions = await pool.query(meetingQuery, [agentId]);
+		// const meetingCount = parseInt(meetingActions.rows[0].count, 10);
 
-		// console.log(meetingCount);
+		// // console.log(meetingCount);
 
-		const followMeetQuery = `select count(*) from action where agent_id = $1 and type = 'Follow-Up After Meeting';`;
-		const followMeetActions = await pool.query(followMeetQuery, [agentId]);
-		const followMeetCount = parseInt(followMeetActions.rows[0].count, 10);
+		// const followMeetQuery = `select count(*) from action where agent_id = $1 and type = 'Follow-Up After Meeting';`;
+		// const followMeetActions = await pool.query(followMeetQuery, [agentId]);
+		// const followMeetCount = parseInt(followMeetActions.rows[0].count, 10);
 
 		// console.log(followMeetCount);
 
 		
-		const emailQuery = `select count(*) from task where agent_id = $1 and type = 'Email';`;
-		const emailActions = await pool.query(emailQuery, [agentId]);
-		const emailCount = parseInt(emailActions.rows[0].count, 10);
+		// const emailQuery = `select count(*) from task where agent_id = $1 and type = 'Email';`;
+		// const emailActions = await pool.query(emailQuery, [agentId]);
+		// const emailCount = parseInt(emailActions.rows[0].count, 10);
 
 		// console.log(emailCount);
 
@@ -84,10 +84,10 @@ const getAgentDashboard =  async (req, res) => {
 
 		const dashboardList = {
 			target: target,
-			followUpCount : followUpCount,
-			meetingCount: meetingCount,
-			followMeetCount : followMeetCount,
-			emailCount: emailCount,
+			// followUpCount : followUpCount,
+			// meetingCount: meetingCount,
+			// followMeetCount : followMeetCount,
+			// emailCount: emailCount,
 			newClientsCount : newClientsCount,
 			qualifiedClientsCount : qualifiedClientsCount,
 			reservedClientsCount: reservedClientsCount,

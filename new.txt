@@ -2,7 +2,7 @@
   "actions": [
     {
       "id": 1,
-      "name_of action": "(Follow Up - Metting)",
+      //"name_of action": "(Follow Up - Metting)",
       "comment": "A follow-up action to check in with the client and update their status.",
       "completed action " : "(T-F)",
       "answer action " : "(T-F)",
