@@ -9,7 +9,20 @@ const getClientById = async (req, res) => {
 
   const pool = await getPool();
   try {
-    const fetchClientById = `SELECT * FROM client WHERE id = $1;`;
+    const fetchClientById = `
+      SELECT 
+          c.*, 
+          array_agg(cp.phone_number) AS phone_numbers
+      FROM 
+          client c
+      LEFT JOIN 
+          client_phone cp
+      ON 
+          c.id = cp.client_id
+      WHERE 
+          c.id = $1
+      GROUP BY 
+          c.id;`;
 
     const { rows } = await pool.query(fetchClientById, [clientId]);
 
