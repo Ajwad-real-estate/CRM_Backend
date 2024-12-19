@@ -79,12 +79,12 @@ const addNewAction = async (req, res) => {
 	}
 
 
-	if (agent_id_check(agent_id, client_id)){
-		return res.status(400).json({message:'you are not assigned to this client, Ask for reasignment'});
-
-	}
-
   try {
+
+		if (!(await agent_id_check(agent_id, client_id))){
+			return res.status(400).json({message:'you are not assigned to this client, Ask for reasignment'});
+	
+		}
 
     const newActionQuery = `
       INSERT INTO task (agent_id, client_id, unit_id, project_id, type, completed, answered, client_status, location, comment, date, time)
@@ -182,7 +182,7 @@ const updateAction = async (req, res) => {
 		const { client_id } = (await pool.query(`select client_id from action where id = $1;`, [actionId])).rows[0];
 
 
-		if (agent_id_check(agent_id, client_id)){
+		if (! (await agent_id_check(agent_id, client_id))){
 			return res.status(400).json({message:'you are not assigned to this client, Ask for reasignment'});
 	
 		};
