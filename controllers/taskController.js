@@ -8,32 +8,32 @@ const pool = await getPool();
 //MARK: all TASK
 // checked
 const getAllTasks = async (req, res) => {
-	const today = todayDate;
-	const agent_id = req.user.agentId;
-	// const pool = await getPool();
+  const today = todayDate;
+  const agent_id = req.user.agentId;
+  // const pool = await getPool();
 
-	try {
-		const allTaskQuery = await pool.query(`SELECT * FROM task where agent_id = $1;`, [agent_id]);
-		const allTasks = allTaskQuery.rows;
-		// console.log(allTasks);
+  try {
+    const allTaskQuery = await pool.query(`SELECT * FROM task where agent_id = $1;`, [agent_id]);
+    const allTasks = allTaskQuery.rows;
+    // console.log(allTasks);
 
-		const todayTasksQuery = await pool.query(`SELECT * FROM task where agent_id = $1 and date = $2;`, [agent_id, today]);
+    const todayTasksQuery = await pool.query(`SELECT * FROM task where agent_id = $1 and date = $2;`, [agent_id, today]);
 
-		const todayTasks = todayTasksQuery.rows;
-		// console.log(todayTasks);
-		
-		const tasks = {
-			allTasks : allTasks,
-			todayTasks : todayTasks
+    const todayTasks = todayTasksQuery.rows;
+    // console.log(todayTasks);
 
-		}
+    const tasks = {
+      allTasks: allTasks,
+      todayTasks: todayTasks
 
-		return res.status(200).json(tasks);
+    }
 
-	} catch (err) {
-		console.log(err.message);
-		return res.status(500).json({message: err.message});
-	};
+    return res.status(200).json(tasks);
+
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).json({ message: err.message });
+  };
 
 };
 
@@ -42,13 +42,13 @@ const getAllTasks = async (req, res) => {
 //MARK: add TASK
 const addNewTask = async (req, res) => {
   const {
-		agent_id = req.user.agentId,
+    agent_id = req.user.agentId,
     title = null,
-		detail = null,
+    detail = null,
     status = null,
     priority_level = null,
-		date,
-		time = null
+    date,
+    time = null
   } = req.body;
 
   try {
@@ -64,8 +64,8 @@ const addNewTask = async (req, res) => {
       status,
       priority_level,
       detail,
-			date,
-			time
+      date,
+      time
     ];
 
     const result = await pool.query(newTaskQuery, values);
@@ -87,27 +87,27 @@ const addNewTask = async (req, res) => {
 
 //MARK: get TASK
 const getTask = async (req, res) => {
-	// const agent_id = req.user.agentId;
-	const taskId = req.params.id;
-	try {
-		const getTaskQuery = await pool.query(`SELECT * FROM task where id = $1;`, [taskId]);
-		console.log(getTaskQuery);
+  // const agent_id = req.user.agentId;
+  const taskId = req.params.id;
+  try {
+    const getTaskQuery = await pool.query(`SELECT * FROM task where id = $1;`, [taskId]);
+    console.log(getTaskQuery);
 
-		if (getTaskQuery.rowCount === 0) {
-			return res.status(404).json({message: 'no tasks found'});
-		}
+    if (getTaskQuery.rowCount === 0) {
+      return res.status(404).json({ message: 'no tasks found' });
+    }
 
 
-		const getTask = getTaskQuery.rows[0];
-		console.log(getTask);
-		
+    const getTask = getTaskQuery.rows[0];
+    console.log(getTask);
 
-		return res.status(200).json(getTask);
 
-	} catch (err) {
-		console.log(err.message);
-		return res.status(500).json({message: err.message});
-	};
+    return res.status(200).json(getTask);
+
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).json({ message: err.message });
+  };
 
 
 };
@@ -135,7 +135,7 @@ const updateTask = async (req, res) => {
       .map((key, index) => `${key} = $${index + 1}`)
       .join(', ');
 
-			console.log(setClause);
+    console.log(setClause);
 
     const values = Object.values(task);
     values.push(taskId); // Add taskId as the last parameter
@@ -145,7 +145,7 @@ const updateTask = async (req, res) => {
       SET ${setClause}
       WHERE id = $${values.length};
     `;
-		console.log(updateTaskQuery);
+    console.log(updateTaskQuery);
 
     // Execute the query
     const result = await pool.query(updateTaskQuery, values);
@@ -164,24 +164,22 @@ const updateTask = async (req, res) => {
 
 
 
-
 //MARK: delete TASK
 const delTask = async (req, res) => {
-	// const agent_id = req.user.agentId;
-	const taskId = req.params.id;
-	try {
-		const getTaskQuery = await pool.query(`delete FROM task where id = $1;`, [taskId]);
-		console.log(getTaskQuery);
+  // const agent_id = req.user.agentId;
+  const taskId = req.params.id;
+  try {
+    const getTaskQuery = await pool.query(`delete FROM task where id = $1;`, [taskId]);
+    console.log(getTaskQuery);
 
-	
-		return res.status(200).json({message: 'task deleted successfully'});
 
-	} catch (err) {
-		console.log(err.message);
-		return res.status(500).json({message: err.message});
-	};
+    return res.status(200).json({ message: 'task deleted successfully' });
+
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).json({ message: err.message });
+  };
 
 
 };
-
-export { getAllTasks , addNewTask, getTask, delTask, updateTask }
+export { getAllTasks, addNewTask, getTask, delTask, updateTask }
