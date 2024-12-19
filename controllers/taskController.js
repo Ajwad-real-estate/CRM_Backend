@@ -9,8 +9,8 @@ const pool = await getPool();
 const agent_id_check = async (agent_id, task_id) => {
 
 	const check_agent = (await pool.query(`select agent_id from task where id = $1;`,[task_id])).rows[0].agent_id;
+	console.log(agent_id, check_agent);
 
-	// console.log(check_agent, agent_id);
 
 	if (check_agent !== agent_id) {
 		return false;
@@ -102,12 +102,12 @@ const addNewTask = async (req, res) => {
 //MARK: get TASK
 const getTask = async (req, res) => {
   // const agent_id = req.user.agentId;
-  const taskId = req.params.id;
+  /* const taskId = req.params.id;
   try {
     const getTaskQuery = await pool.query(`SELECT * FROM task where id = $1;`, [taskId]);
     console.log(getTaskQuery);
 
-    if (getTaskQuery.rowCount === 0) {
+    if (!getTaskQuery.rowCount === 0) {
       return res.status(404).json({ message: 'no tasks found' });
     }
 
@@ -122,7 +122,7 @@ const getTask = async (req, res) => {
     console.log(err.message);
     return res.status(500).json({ message: err.message });
   };
-
+ */
 
 };
 
@@ -135,12 +135,13 @@ const updateTask = async (req, res) => {
   const task = req.body; // Expecting an object with fields to update
 
 
-	if (agent_id_check(agent_id, taskId)){
+  try {
+		
+	if (! (await agent_id_check(agent_id, taskId))){
 		return res.status(400).json({message:'you are not not authorized to edit this task'});
-
 	}
 
-  try {
+
     // Validate taskId
     if (!taskId) {
       return res.status(400).json({ message: 'Invalid task ID' });
@@ -191,15 +192,15 @@ const delTask = async (req, res) => {
   const taskId = req.params.id;
 
 
-
-	if (agent_id_check(agent_id, taskId)){
-		return res.status(400).json({message:'you are not authorized to delete this task'});
-
-	}
-
   try {
+		
+
+	if (!(await agent_id_check(agent_id, taskId))){
+		return res.status(400).json({message:'you are not authorized to delete this task'});}
+
+
+
     const getTaskQuery = await pool.query(`delete FROM task where id = $1;`, [taskId]);
-    console.log(getTaskQuery);
 
 
     return res.status(200).json({ message: 'task deleted successfully' });
