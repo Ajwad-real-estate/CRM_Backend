@@ -41,7 +41,7 @@ const getAllActions = async (req, res) => {
 		
 		const actions = {
 			allActions : allActions,
-			todayTasks : todayActions
+			todayActions : todayActions
 
 		}
 
