@@ -9,7 +9,7 @@ const deleteClientById = async (req, res) => {
 
   const pool = await getPool();
   try {
-    const deleteClientQuery = `DELETE FROM client WHERE client_id = $1;`;
+    const deleteClientQuery = `DELETE FROM client WHERE id = $1;`;
 
     const { rowCount } = await pool.query(deleteClientQuery, [clientId]);
 

@@ -1,13 +1,10 @@
 import { getClientsService } from "../../services/clientServices/getClients.services.js";
 
 const getClients = async (req, res) => {
-  console.log("GETclients")
+  console.log("GETclients");
   try {
     const user = req.user;
-    console.log(
-      "yousef" +
-      user
-    )
+    console.log("yousef" + user);
     const clients = await getClientsService(user);
 
     res.status(200).json(clients);
