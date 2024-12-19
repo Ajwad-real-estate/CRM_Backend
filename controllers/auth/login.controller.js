@@ -54,7 +54,7 @@ const handleLogin = async (req, res) => {
 
     // Generate tokens based on the agent details
     const userPayload = { username, agentId, role, roleId };
-    console.log(userPayload)
+    console.log(userPayload);
 
     const accessToken = generateAccessToken(userPayload);
     const refreshToken = generateRefreshToken(userPayload);

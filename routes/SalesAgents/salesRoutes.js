@@ -7,9 +7,12 @@ import { getUserDataById, updateUserDataById } from "../../controllers/SalesAgen
 // import authenticate from "../middleware/authenticate.js"; // Middleware for token validation
 // import getSalesAgentsMiddleWare from "../../middlewares/getSalesAgents.js";
 import authorizeManager from "../../middlewares/authorizeManager.js";
+import authorizeUser from "../../middlewares/authorizeUser.js";
+import rolesTitles from "../../controllers/SalesAgents/rolesTitles.controller.js";
 
 // const router = express.Router();
 const router = Router();
+router.use(authorizeUser)
 
 // Route to fetch sales agent details (restricted to managers)
 // router.get("/agents", getSalesAgentsMiddleWare, getSalesAgents);
@@ -23,6 +26,7 @@ router.put("/agentDetails/:id"
     , authorizeManager
     , updateUserDataById
 )
+router.use("/roles", rolesTitles)
 // router.post("/agentDetails/:id", userDataById)
 // router.get("/agentDetails", )
 // router.post("/agentDetails", )
