@@ -72,7 +72,6 @@ export const createClientService = async (clientData) => {
     await pool.query("COMMIT"); // Commit transaction
     return { clientId, message: "Client created successfully." };
   } catch (error) {
-    console.log("here");
     await pool.query("ROLLBACK"); // Rollback transaction in case of error
     throw error; // Re-throw the error to handle in the controller
   }
