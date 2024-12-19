@@ -35,11 +35,11 @@ const getAgentDashboard =  async (req, res) => {
 		const meetingActions = await pool.query(meetingQuery, [agentId]);
 		const meetingCount = parseInt(meetingActions.rows[0].count, 10);
 
-		// console.log(meetingCount);
+		// // console.log(meetingCount);
 
-		const followMeetQuery = `select count(*) from action where agent_id = $1 and type = 'Follow-Up After Meeting';`;
-		const followMeetActions = await pool.query(followMeetQuery, [agentId]);
-		const followMeetCount = parseInt(followMeetActions.rows[0].count, 10);
+		// const followMeetQuery = `select count(*) from action where agent_id = $1 and type = 'Follow-Up After Meeting';`;
+		// const followMeetActions = await pool.query(followMeetQuery, [agentId]);
+		// const followMeetCount = parseInt(followMeetActions.rows[0].count, 10);
 
 		// console.log(followMeetCount);
 
@@ -84,10 +84,10 @@ const getAgentDashboard =  async (req, res) => {
 
 		const dashboardList = {
 			target: target,
-			followUpCount : followUpCount,
-			meetingCount: meetingCount,
-			followMeetCount : followMeetCount,
-			emailCount: emailCount,
+			// followUpCount : followUpCount,
+			// meetingCount: meetingCount,
+			// followMeetCount : followMeetCount,
+			// emailCount: emailCount,
 			newClientsCount : newClientsCount,
 			qualifiedClientsCount : qualifiedClientsCount,
 			reservedClientsCount: reservedClientsCount,

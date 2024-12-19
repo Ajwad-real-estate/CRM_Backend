@@ -1,7 +1,7 @@
 import { createClientService } from "../../services/clientServices/createClient.services.js";
 
 const createMultipleClients = async (req, res) => {
-  const clients = req.body.clients;
+  const { clients } = req.body;
 
   if (!clients || clients.length === 0) {
     return res.status(400).json({ message: "No clients provided." });

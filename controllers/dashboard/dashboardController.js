@@ -6,10 +6,10 @@ const getDashboard = async (req, res) => {
 	const user_role = req.user.roleId;
 	console.log(user_role);
 
-	if (user_role === 2){
-		 return getManagerDashboard(req, res);
+	if (user_role === 2) {
+		return getManagerDashboard(req, res);
 
-	}else {
+	} else {
 		return getAgentDashboard(req, res);
 
 	};

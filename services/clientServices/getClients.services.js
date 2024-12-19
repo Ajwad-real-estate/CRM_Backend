@@ -1,48 +1,55 @@
 import { getPool } from "../../configs/dbConfig.js";
 
-export const getClientsService = async (user) => {
+export const getClientsService = async (user, filters) => {
   const pool = await getPool();
 
-  const { role, agentId: agentId } = user;
-  console.log("user from getClientsService" + user)
+  const { roleId, agentId: agentId } = user;
+  const { status, assigned } = filters;
+
   try {
-    if (role === "Sales Manager") {
-      const getAllClients = `SELECT * FROM client;`;
-      const { rows } = await pool.query(getAllClients);
+    let getClientsQuery = `
+        SELECT 
+            c.*, 
+            array_agg(cp.phone_number) AS phone_numbers
+        FROM 
+            client c
+        LEFT JOIN 
+            client_phone cp
+        ON 
+            c.id = cp.client_id
+    `;
 
-      return rows;
+    const conditions = [];
+    const values = [];
 
-    } else {
-      // const getAgentClients = `SELECT * FROM client WHERE agent_id = $1`;
-      //     const getAgentClients = ` SELECT 
-      //   c.*, 
-      //   cp.phone_number
-      // FROM 
-      //   client c
-      // LEFT JOIN 
-      //   client_phone cp
-      // ON 
-      //   c.id = cp.client_id
-      // WHERE 
-      //   c.agent_id = $1`;
-      const getAgentClients = `SELECT 
-    c.*, 
-    array_agg(cp.phone_number) AS phone_numbers
-FROM 
-    client c
-LEFT JOIN 
-    client_phone cp
-ON 
-    c.id = cp.client_id
-WHERE 
-    c.agent_id = $1
-GROUP BY 
-    c.id;`;
-
-      const { rows } = await pool.query(getAgentClients, [agentId]);
-      console.log(rows)
-      return rows;
+    if (roleId === 1 || roleId === 2) {
+      if (assigned === "false") conditions.push("c.agent_id IS NULL");
+      else if (assigned === "true") conditions.push("c.agent_id IS NOT NULL");
+      else if (status) {
+        conditions.push("c.status = $1");
+        values.push(status);
+      }
+    } else if (roleId === 3) {
+      conditions.push("c.agent_id = $1");
+      values.push(agentId);
+      if (status) {
+        conditions.push("c.status = $2");
+        values.push(status);
+      }
     }
+
+    if (conditions.length > 0) {
+      getClientsQuery += ` WHERE ${conditions.join(" AND ")}\n`;
+    }
+
+    getClientsQuery += `GROUP BY c.id;`;
+
+    console.log("Final Query:", getClientsQuery);
+    console.log("Values:", values);
+
+    const { rows } = await pool.query(getClientsQuery, values);
+
+    return rows;
   } catch (error) {
     console.error("Error fetching clients:", error);
     throw new Error("Unable to fetch clients. Please try again.");

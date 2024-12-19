@@ -3,11 +3,13 @@ import authRoutes from "./auth/index.js";
 
 import authorizeUser from "../middlewares/authorizeUser.js";
 import dashboardRoute from "./dashboard.js";
-import getSalesAgentsRoute from "./SalesAgents/getSalesAgentsDataRoute.js";
-import createSalesAccountRoute from "./SalesAgents/createSalesAccountRoute.js";
+import getSalesAgentsRoute from "./SalesAgents/salesRoutes.js";
+import createSalesAccountRoute from "./SalesAgents/salesRoutes.js";
 import taskRoute from "./task.js";
 import actionRoute from "./action.js";
 import clientRoutes from "./clients/index.js";
+import salesRoutes from "./SalesAgents/salesRoutes.js";
+import userData from "./SalesAgents/salesRoutes.js"
 
 const router = Router();
 
@@ -22,7 +24,8 @@ router.use("/auth", authRoutes);
 router.use(dashboardRoute);
 router.use(taskRoute);
 router.use(actionRoute);
-router.use(getSalesAgentsRoute);
-router.use(createSalesAccountRoute);
-// router.use(userData);
+// router.use(getSalesAgentsRoute);
+// router.use(createSalesAccountRoute);
+// router.use(userDataById)
+router.use(userData);
 export default router;

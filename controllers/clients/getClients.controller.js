@@ -1,14 +1,12 @@
 import { getClientsService } from "../../services/clientServices/getClients.services.js";
 
 const getClients = async (req, res) => {
-  console.log("GETclients")
+  const user = req.user;
+  const { status, assigned } = req.query;
+  console.log("Query params:", { status, assigned });
+
   try {
-    const user = req.user;
-    console.log(
-      "yousef" +
-      user
-    )
-    const clients = await getClientsService(user);
+    const clients = await getClientsService(user, { status, assigned });
 
     res.status(200).json(clients);
   } catch (error) {

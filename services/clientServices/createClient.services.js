@@ -10,15 +10,17 @@ export const createClientService = async (clientData) => {
     channel,
     type,
     status,
+    budget,
     phoneNumbers,
   } = clientData;
 
-  if (!name) throw new Error("Name is required.");
+  console.log(phoneNumbers);
+
+  // if (!name) throw new Error("Name is required.");
   if (!phoneNumbers || phoneNumbers.length < 1)
     throw new Error("Phone number is required.");
 
   const pool = await getPool();
-  const clientId = null;
 
   try {
     await pool.query("BEGIN"); // Start transaction
@@ -40,8 +42,8 @@ export const createClientService = async (clientData) => {
 
     // Insert client into database
     const createClientQuery = `
-      INSERT INTO client (name, age, email, city_id, street, channel, type, status)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id;
+      INSERT INTO client (name, age, email, city_id, street, channel, type, status, budget)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id;
     `;
     const createClientResult = await pool.query(createClientQuery, [
       name,
@@ -52,9 +54,10 @@ export const createClientService = async (clientData) => {
       channel,
       type,
       status,
+      budget,
     ]);
 
-    clientId = createClientResult.rows[0].id;
+    const clientId = createClientResult.rows[0].id;
 
     // Insert client's phone numbers
     const phoneInsertQuery = `
