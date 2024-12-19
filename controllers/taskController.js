@@ -25,23 +25,20 @@ const agent_id_check = async (agent_id, task_id) => {
 //MARK: all TASK
 // checked
 const getAllTasks = async (req, res) => {
-  const today = todayDate;
   const agent_id = req.user.agentId;
-  // const pool = await getPool();
 
   try {
-    const allTaskQuery = await pool.query(`SELECT * FROM task where agent_id = $1;`, [agent_id]);
+    const allTaskQuery = await pool.query(`SELECT * FROM task where agent_id = $1 and status != 'completed';`, [agent_id]);
+		
     const allTasks = allTaskQuery.rows;
-    // console.log(allTasks);
 
-    const todayTasksQuery = await pool.query(`SELECT * FROM task where agent_id = $1 and date = $2;`, [agent_id, today]);
+		const allActionQuery = await pool.query(`SELECT * FROM action where agent_id = $1 and  not completed;`, [agent_id]);
 
-    const todayTasks = todayTasksQuery.rows;
-    // console.log(todayTasks);
+    const allActions = allActionQuery.rows;
 
     const tasks = {
       allTasks: allTasks,
-      todayTasks: todayTasks
+      allActions: allActions
 
     }
 
