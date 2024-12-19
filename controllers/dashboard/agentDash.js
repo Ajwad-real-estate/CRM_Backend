@@ -32,19 +32,11 @@ const getAgentDashboard = async (req, res) => {
     const meetingActions = await pool.query(meetingQuery, [agentId]);
     const meetingCount = parseInt(meetingActions.rows[0].count, 10);
 
-<<<<<<< HEAD
     // console.log(meetingCount);
 
     const followMeetQuery = `select count(*) from action where agent_id = $1 and type = 'Follow-Up After Meeting';`;
     const followMeetActions = await pool.query(followMeetQuery, [agentId]);
     const followMeetCount = parseInt(followMeetActions.rows[0].count, 10);
-=======
-		const followMeetQuery = `select count(*) from action where agent_id = $1 and type = 'Follow-Up After Meeting';`;
-		const followMeetActions = await pool.query(followMeetQuery, [agentId]);
-		const followMeetCount = parseInt(followMeetActions.rows[0].count, 10);
-
-		console.log(followMeetCount);
->>>>>>> ac5d7c1 (fix action controller)
 
     // console.log(followMeetCount);
 
@@ -95,41 +87,11 @@ const getAgentDashboard = async (req, res) => {
 
     console.log(dashboardList);
 
-<<<<<<< HEAD
     return res.status(200).json(dashboardList);
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ message: "couldn't fetch dashboard data" });
   }
 };
-=======
-
-		const dashboardList = {
-			target: target,
-			followUpCount : followUpCount,
-			meetingCount: meetingCount,
-			followMeetCount : followMeetCount,
-			emailCount: emailCount,
-			newClientsCount : newClientsCount,
-			qualifiedClientsCount : qualifiedClientsCount,
-			reservedClientsCount: reservedClientsCount,
-			doneClientsCount : doneClientsCount
-		};
-
-		console.log(dashboardList);
-
-	
-	return res.status(200).json(dashboardList);
-	
-	}catch (error){
-		  console.log(error.message);
-			return res.status(500).json({message: "couldn't fetch dashboard data"});
-				
-			};
-	
-	
-	};
-	
->>>>>>> ac5d7c1 (fix action controller)
 
 export default getAgentDashboard;
