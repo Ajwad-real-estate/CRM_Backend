@@ -25,13 +25,13 @@ const getAgentDashboard =  async (req, res) => {
 
 		// today task
      
-		const followUpQuery = `select count(*) from task where agent_id = $1 and type = 'Follow-Up';`;
+		const followUpQuery = `select count(*) from action where agent_id = $1 and type = 'Follow-Up';`;
 		const followUpActions = await pool.query(followUpQuery, [agentId]);
 		const followUpCount = parseInt(followUpActions.rows[0].count, 10);
 
 		// console.log(followUpCount);
 
-		const meetingQuery = `select count(*) from task where agent_id = $1 and type = 'Meeting';`;
+		const meetingQuery = `select count(*) from action where agent_id = $1 and type = 'Meeting';`;
 		const meetingActions = await pool.query(meetingQuery, [agentId]);
 		const meetingCount = parseInt(meetingActions.rows[0].count, 10);
 
@@ -44,7 +44,7 @@ const getAgentDashboard =  async (req, res) => {
 		// console.log(followMeetCount);
 
 		
-		const emailQuery = `select count(*) from task where agent_id = $1 and type = 'Email';`;
+		const emailQuery = `select count(*) from action where agent_id = $1 and type = 'Email';`;
 		const emailActions = await pool.query(emailQuery, [agentId]);
 		const emailCount = parseInt(emailActions.rows[0].count, 10);
 

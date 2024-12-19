@@ -163,4 +163,25 @@ const updateTask = async (req, res) => {
 
 
 
-export { getAllTasks , addNewTask, getTask, updateTask }
+
+
+//MARK: delete TASK
+const delTask = async (req, res) => {
+	// const agent_id = req.user.agentId;
+	const taskId = req.params.id;
+	try {
+		const getTaskQuery = await pool.query(`delete FROM task where id = $1;`, [taskId]);
+		console.log(getTaskQuery);
+
+	
+		return res.status(200).json({message: 'task deleted successfully'});
+
+	} catch (err) {
+		console.log(err.message);
+		return res.status(500).json({message: err.message});
+	};
+
+
+};
+
+export { getAllTasks , addNewTask, getTask, delTask, updateTask }
