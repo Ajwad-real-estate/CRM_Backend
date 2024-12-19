@@ -192,10 +192,10 @@ const delTask = async (req, res) => {
 
 
 
-	// if (agent_id_check(agent_id, taskId)){
-	// 	return res.status(400).json({message:'you are not authorized to delete this task'});
+	if (agent_id_check(agent_id, taskId)){
+		return res.status(400).json({message:'you are not authorized to delete this task'});
 
-	// }
+	}
 
   try {
     const getTaskQuery = await pool.query(`delete FROM task where id = $1;`, [taskId]);
