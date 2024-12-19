@@ -5,6 +5,23 @@ import { todayDate } from "../utils/dashboardUtils.js";
 
 const pool = await getPool();
 
+
+const agent_id_check = async (agent_id, task_id) => {
+
+	const check_agent = (await pool.query(`select agent_id from task where id = $1;`,[task_id])).rows[0].agent_id;
+
+	// console.log(check_agent, agent_id);
+
+	if (check_agent !== agent_id) {
+		return false;
+	};
+
+	return true;
+
+};
+
+
+
 //MARK: all TASK
 // checked
 const getAllTasks = async (req, res) => {
@@ -116,8 +133,15 @@ const getTask = async (req, res) => {
 
 // MARK: update TASK
 const updateTask = async (req, res) => {
+	const agent_id = req.user.agentId;
   const taskId = req.params.id;
   const task = req.body; // Expecting an object with fields to update
+
+
+	if (agent_id_check(agent_id, taskId)){
+		return res.status(400).json({message:'you are not not authorized to edit this task'});
+
+	}
 
   try {
     // Validate taskId
@@ -166,8 +190,16 @@ const updateTask = async (req, res) => {
 
 //MARK: delete TASK
 const delTask = async (req, res) => {
-  // const agent_id = req.user.agentId;
+  const agent_id = req.user.agentId;
   const taskId = req.params.id;
+
+
+
+	if (agent_id_check(agent_id, taskId)){
+		return res.status(400).json({message:'you are not authorized to delete this task'});
+
+	}
+
   try {
     const getTaskQuery = await pool.query(`delete FROM task where id = $1;`, [taskId]);
     console.log(getTaskQuery);
