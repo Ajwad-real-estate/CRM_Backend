@@ -9,6 +9,7 @@ import { getUserDataById, updateUserDataById } from "../../controllers/SalesAgen
 import authorizeManager from "../../middlewares/authorizeManager.js";
 import authorizeUser from "../../middlewares/authorizeUser.js";
 import rolesTitles from "../../controllers/SalesAgents/rolesTitles.controller.js";
+import { getUserData, updateUserData } from "../../controllers/SalesAgents/userData.controller.js";
 
 // const router = express.Router();
 const router = Router();
@@ -24,7 +25,15 @@ router.get("/agentDetails/:id"
 )
 router.put("/agentDetails/:id"
     , authorizeManager
-    , updateUserDataById
+    , updateUserData
+)
+router.get("/agentDetails"
+    // , authorizeManager
+    , getUserData
+)
+router.put("/agentDetails"
+    // , authorizeManager
+    , updateUserData
 )
 router.use("/roles", rolesTitles)
 // router.post("/agentDetails/:id", userDataById)
