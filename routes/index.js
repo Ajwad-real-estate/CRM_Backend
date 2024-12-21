@@ -10,6 +10,7 @@ import actionRoute from "./action.js";
 import clientRoutes from "./clients/index.js";
 import salesRoutes from "./SalesAgents/salesRoutes.js";
 import userData from "./SalesAgents/salesRoutes.js"
+import getThings from "./things/index.js"
 
 const router = Router();
 
@@ -24,6 +25,7 @@ router.use("/auth", authRoutes);
 router.use(dashboardRoute);
 router.use(taskRoute);
 router.use(actionRoute);
+router.use(getThings);
 // router.use(getSalesAgentsRoute);
 // router.use(createSalesAccountRoute);
 // router.use(userDataById)

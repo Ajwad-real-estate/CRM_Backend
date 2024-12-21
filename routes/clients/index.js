@@ -6,22 +6,20 @@ import createMultiple from "./createClients.js";
 import getClients from "./getClients.js";
 import getClientById from "./getClientById.js";
 import deleteClient from "./deleteClient.js";
+import authorizeManager from "../../middlewares/authorizeManager.js";
+import updateClientById from "./updateClientById.js";
 
 const router = Router();
 
 router.use(authorizeUser);
 
-router.use(
-    // authorizeManager
-    // ,
-    createSingle);
-router.use(
-    // authorizeManager,
-    createMultiple);
+router.use(// authorizeManager// ,
+    createSingle
+);
+router.use(authorizeManager, createMultiple);
 router.use(getClients);
 router.use(getClientById);
-router.use(
-    // authorizeManager,
-    deleteClient);
+router.use(updateClientById);// @ yousef eslam
+router.use(authorizeManager, deleteClient);
 
 export default router;
