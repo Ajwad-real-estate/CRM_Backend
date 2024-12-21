@@ -2,6 +2,8 @@ import { getPool } from "../../configs/dbConfig.js";
 import bcrypt from "bcryptjs";
 
 const handleRegister = async (req, res) => {
+  const manager_id_from_userpayload = req.user.agentId;
+
   const {
     username,
     email,
@@ -11,6 +13,7 @@ const handleRegister = async (req, res) => {
     cityId,
     street,
     phoneNumbers,
+    manager_id = manager_id_from_userpayload,
   } = req.body;
 
   if (
@@ -22,6 +25,7 @@ const handleRegister = async (req, res) => {
     !cityId ||
     !street ||
     !phoneNumbers ||
+
     phoneNumbers.length < 1
   )
     return res.status(400).json({ message: "All fields are required." });
@@ -30,16 +34,33 @@ const handleRegister = async (req, res) => {
 
   try {
     // Check if the username or email already exists and taken by any user
+    // const userCheckQuery = `
+    //   SELECT username, email FROM account WHERE username = $1 OR email = $2;
+    // `;
     const userCheckQuery = `
-      SELECT username, email FROM account WHERE username = $1 OR email = $2;
+      SELECT
+          a.username,
+          a.email,
+          ap.phone_number
+      FROM
+          account AS a
+      LEFT JOIN
+          defaultdb.public.agent_phone AS ap
+      ON
+          a.agent_id = ap.agent_id
+      WHERE
+          a.username = $1
+          OR a.email = $2
+          OR ap.phone_number = ANY ($3::text[]);
     `;
-    const { rows } = await pool.query(userCheckQuery, [username, email]);
+    const { rows } = await pool.query(userCheckQuery, [username, email, phoneNumbers,]);
 
     console.log(rows);
     console.log(rows.length);
 
     let isUsernameTaken = false;
     let isEmailTaken = false;
+    const duplicatePhoneNumbers = [];
 
     if (rows.length > 0) {
       rows.forEach((user) => {
@@ -49,29 +70,42 @@ const handleRegister = async (req, res) => {
         if (user.email === email) {
           isEmailTaken = true;
         }
+        if (user.phone_number && phoneNumbers.includes(user.phone_number)) {
+          duplicatePhoneNumbers.push(user.phone_number);
+        }
       });
     }
 
-    if (isUsernameTaken && isEmailTaken) {
-      return res
-        .status(409)
-        .json({ message: "Both username and email are already taken." });
-    } else if (isUsernameTaken) {
+    if (isUsernameTaken && isEmailTaken && duplicatePhoneNumbers.length > 0) {
+      return res.status(409).json({
+        message: "Username email, and phone numbers are already taken.",
+        duplicatePhoneNumbers,
+      });
+    }
+    if (isUsernameTaken) {
       return res.status(409).json({ message: "Username is already taken." });
-    } else if (isEmailTaken) {
+    }
+    if (isEmailTaken) {
       return res.status(409).json({ message: "Email is already taken." });
+    }
+    if (duplicatePhoneNumbers.length > 0) {
+      return res.status(409).json({
+        message: "Phone numbers are already taken.",
+        duplicatePhoneNumbers,
+      });
     }
 
     // Create new agent and return it's id as agentId
     const createAgentQuery = `
-      INSERT INTO agent (name, role_id, city_id, street)
-      VALUES ($1, $2, $3, $4) RETURNING id  
+      INSERT INTO agent (name, role_id, city_id, street,manager_id)
+      VALUES ($1, $2, $3, $4, $5) RETURNING id  
     `;
     const createAgentResult = await pool.query(createAgentQuery, [
       name,
       roleId,
       cityId,
       street,
+      manager_id,
     ]);
     const agentId = createAgentResult.rows[0].id;
 
@@ -106,7 +140,7 @@ const handleRegister = async (req, res) => {
     });
   } catch (error) {
     console.error("Error during agent registration:", error);
-    res.status(500).json({ message: "Internal server error." });
+    res.status(500).json({ message: "Internal server error. Please check Phone number field are it duplicate ?" });
   }
 };
 

@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const { getreport } = require('../../controllers/reportController');
+// const { getreport } = require('../../controllers/reportController');
 
-router.get('/dashboard', getreport);
+// router.get('/dashboard', getreport);
 
 
 
