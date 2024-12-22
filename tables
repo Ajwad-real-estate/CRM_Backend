@@ -1,0 +1,41 @@
+agent status
+
+1	Online
+2	Offline
+3	Busy
+4	In A Meeting
+
+
+client_type
+
+1	Warm
+2	Cold
+
+
+client_status
+
+1	New
+2	Qualified
+3	Reserved
+4	Done Deal
+5	Archieved
+6	Canceled
+7	Lost
+
+
+
+client_channel
+
+1	Google Form
+2	Facebook
+3	Twitter
+4	Instagram
+5	Website
+6	Referral
+
+
+action_type
+1	Follow-Up
+2	Meeting
+3	Follow-Up after Meeting
+4	Email
