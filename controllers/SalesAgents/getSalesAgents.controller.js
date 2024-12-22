@@ -3,7 +3,7 @@ import { getPool } from "../../configs/dbConfig.js";
 const getSalesAgents = async (req, res) => {
   console.log("getSalesAgentsFun")
   const pool = await getPool();
-  const { agentId } = req.user; // Assume `req.user` is populated via middleware
+  const agentId = req.user.agentId; // Assume `req.user` is populated via middleware
 
   // const manager_id_from_userpayload = req.user.agentId;
   console.log(agentId);
@@ -25,24 +25,35 @@ const getSalesAgents = async (req, res) => {
     SELECT
     agent.id,
     agent.name,
-    role.title,
-    agent.status,
-    agent.manager_id
+     role.title,
+    agent.status_id,
+    agent_status.name AS status,
+    agent.manager_id,
+     manager.name AS manager_name
+
 FROM
     agent
-JOIN
-    role
-ON
-    agent.role_id = role.id
+ JOIN
+     role
+ ON
+     agent.role_id = role.id
+ JOIN
+     agent_status
+ ON
+     agent.status_id = agent_status.id
+ LEFT JOIN
+     agent AS manager
+ ON
+     agent.manager_id = manager.id
 WHERE
-    role.title IN 
-    ('Sales Agent', 'Team Lead','Senior Sales Agent', 'Intern',
-    'Field Sales Agent', 'Online Sales Specialist')
-    AND agent.manager_id = $1; 
-    `;
 
-    // WHERE
-    //     role.title IN ('Sales Agent', 'Senior Sales Agent','Intern','Field Sales Agent','Online Sales Specialist')`;
+agent.manager_id = $1; 
+`;
+
+    // --  role.title IN 
+    // --  ('Sales Agent', 'Team Lead','Senior Sales Agent', 'Intern',
+    // --  'Field Sales Agent', 'Online Sales Specialist')
+    // --  AND 
     const { rows: agents } = await pool.query(agentsQuery
       , [agentId]
     );
