@@ -63,10 +63,10 @@ const addNewAction = async (req, res) => {
     client_id = null,
     unit_id = null,
     project_id = null,
-    type = null,
+    type_id,
 		completed = false,
 		answered = false,
-    client_status = null,
+    status_id,
     location = null,
     comment = null,
 		date,
@@ -87,7 +87,7 @@ const addNewAction = async (req, res) => {
 		}
 
     const newActionQuery = `
-      INSERT INTO task (agent_id, client_id, unit_id, project_id, type, completed, answered, client_status, location, comment, date, time)
+      INSERT INTO action (agent_id, client_id, unit_id, project_id, type_id, completed, answered, status_id, location, comment, date, time)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);`;
 
     const values = [
@@ -95,10 +95,10 @@ const addNewAction = async (req, res) => {
       client_id,
       unit_id,
       project_id,
-      type,
+      type_id,
 			completed,
 			answered,
-      client_status,
+      status_id,
       location,
       comment,
 			date,
@@ -160,7 +160,7 @@ const updateAction = async (req, res) => {
 		completed = false,
 		answered = false,
 		comment = null,
-	  client_status = null,
+	  status_id,
     unit_id = null,
     project_id = null,
     cancel_resaon = null,
@@ -193,11 +193,11 @@ const updateAction = async (req, res) => {
 		let result;
 
 
-		if (client_status == null || client_status == 'new'){
+		if (!status_id || status_id == 1){
 		updateActionQuery = ` UPDATE action
-     		SET completed = $1, answered = $2, comment = $3, client_status = $4
+     		SET completed = $1, answered = $2, comment = $3, status_id = $4
      			 WHERE id = $5;`;
-		result = await pool.query(updateActionQuery, [completed , answered, comment, client_status, actionId]);
+		result = await pool.query(updateActionQuery, [completed , answered, comment, status_id, actionId]);
 
 		if (result.rowCount === 0) {
       return res.status(404).json({ message: 'Action not found' });
@@ -209,12 +209,12 @@ const updateAction = async (req, res) => {
 
 
 		updateActionQuery = ` insert into client_agent_unit
-		(client_id, status, project_id, unit_id, cancel_reason, agent_id, reservation_amount)
+		(client_id, status_id, project_id, unit_id, cancel_reason, agent_id, reservation_amount)
 		values ($1, $2, $3, $4, $5, $6, $7);`;
 
 
 		result = await pool.query(updateActionQuery,
-			[ client_id, client_status, project_id, unit_id, cancel_resaon, agent_id, reservation_amount]);
+			[ client_id, status_id, project_id, unit_id, cancel_resaon, agent_id, reservation_amount]);
 
 
 		updateActionQuery = await pool.query('update client set nat_id = $1 where id = $2;',[client_nat_id, client_id]);
