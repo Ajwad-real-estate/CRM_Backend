@@ -28,7 +28,7 @@ const getAllTasks = async (req, res) => {
   const agent_id = req.user.agentId;
 
   try {
-    const allTaskQuery = await pool.query(`SELECT * FROM task where agent_id = $1 and status != 'completed';`, [agent_id]);
+    const allTaskQuery = await pool.query(`SELECT * FROM task where agent_id = $1 and status_id not in (3,4,5);`, [agent_id]);
 		
     const allTasks = allTaskQuery.rows;
 
@@ -59,8 +59,8 @@ const addNewTask = async (req, res) => {
     agent_id = req.user.agentId,
     title = null,
     detail = null,
-    status = null,
-    priority_level = null,
+    status_id ,
+    priority_id = null,
     date,
     time = null
   } = req.body;
@@ -69,14 +69,14 @@ const addNewTask = async (req, res) => {
     // const pool = await getPool();
 
     const newTaskQuery = `
-      INSERT INTO task (agent_id, title, status, priority_level, detail, date, time)
+      INSERT INTO task (agent_id, title, status_id, priority_id, detail, date, time)
       VALUES ($1, $2, $3, $4, $5, $6, $7);`;
 
     const values = [
       agent_id,
       title,
-      status,
-      priority_level,
+      status_id,
+      priority_id,
       detail,
       date,
       time

@@ -39,3 +39,16 @@ action_type
 2	Meeting
 3	Follow-Up after Meeting
 4	Email
+
+
+task_prioryu lvel
+1	High
+2	Medium
+3	Low
+
+task status
+1	New
+2	Pending
+3	Archieved
+4	Done
+5	Canceled
