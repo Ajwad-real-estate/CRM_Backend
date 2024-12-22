@@ -64,7 +64,7 @@ const updateUserDataById = async (req, res) => {
         const updateUserQuery = `
             UPDATE agent
             SET ${setClause}
-            WHERE id = $${values.length};
+            WHERE id = CAST($${values.length} AS UUID);  -- Cast userId to UUID
         `;
 
         console.log("Update Query:", updateUserQuery);
@@ -83,6 +83,5 @@ const updateUserDataById = async (req, res) => {
         return res.status(500).json({ message: "Internal server error." });
     }
 };
-
 
 export { updateUserDataById, getUserDataById };

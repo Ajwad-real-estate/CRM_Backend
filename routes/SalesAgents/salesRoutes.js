@@ -24,8 +24,8 @@ router.get("/agentDetails/:id"
     , getUserDataById
 )
 router.put("/agentDetails/:id"
-    , authorizeManager
-    , updateUserData
+    // , authorizeManager
+    , updateUserDataById
 )
 router.get("/agentDetails"
     // , authorizeManager
