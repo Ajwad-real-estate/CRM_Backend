@@ -7,9 +7,9 @@ export const createClientService = async (clientData) => {
     email,
     city_id,
     street,
-    channel,
-    type,
-    status,
+    channel_id,
+    type_id,
+    status_id,
     budget,
     phoneNumbers,
   } = clientData;
@@ -42,7 +42,7 @@ export const createClientService = async (clientData) => {
 
     // Insert client into database
     const createClientQuery = `
-      INSERT INTO client (name, age, email, city_id, street, channel, type, status, budget)
+      INSERT INTO client (name, age, email, city_id, street, channel_id, type_id, status_id, budget)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id;
     `;
     const createClientResult = await pool.query(createClientQuery, [
@@ -51,9 +51,9 @@ export const createClientService = async (clientData) => {
       email,
       city_id,
       street,
-      channel,
-      type,
-      status,
+      channel_id,
+      type_id,
+      status_id,
       budget,
     ]);
 
