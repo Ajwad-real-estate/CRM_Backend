@@ -13,6 +13,8 @@ const agent_id_check = async (agent_id, client_id) => {
 	// console.log(check_agent, agent_id);
 
 	if (check_agent !== agent_id) {
+		const check_agent_role = (await pool.query(`select role_id from agent where id = $1;`, [agent_id])).rows[0].role_id;
+		if (check_agent_role == 2 || check_agent_role == 1) return true;
 		return false;
 	};
 
