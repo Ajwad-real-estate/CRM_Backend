@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import authorizeUser from '../middlewares/authorizeUser.js';
 
-import {  getAllActions , addNewAction, getAction, updateAction, getActionsHistoryOfClient } from '../controllers/actionController.js'
+import {  getAllActions , addNewAction, getAction, updateAction, getActionsHistoryOfClient, getActionsNotcompletedOfClient } from '../controllers/actionController.js'
 
 const router = Router();
 
@@ -16,6 +16,7 @@ router.post('/actions', addNewAction);
 // router.get('/task:id', getAction);
 router.put('/actions/:id', updateAction);
 router.get('/actionsHistoryOfClient/:id', getActionsHistoryOfClient); // yousef eslam
+router.get('/actionsNotcompletedOfClient/:id', getActionsNotcompletedOfClient); // yousef eslam
 
 
 export default router;

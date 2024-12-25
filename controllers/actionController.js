@@ -152,7 +152,8 @@ const getAction = async (req, res) => {
 };
 
 
-
+// yousef
+//MARK: act History 
 const getActionsHistoryOfClient = async (req, res) => {
 	const clientId = req.params.id;
 
@@ -172,6 +173,26 @@ const getActionsHistoryOfClient = async (req, res) => {
 	}
 };
 
+// yousef
+//MARK: act History 
+const getActionsNotcompletedOfClient = async (req, res) => {
+	const clientId = req.params.id;
+
+	try {
+		// Query to fetch actions for the given client ID
+		const { rows, rowCount } = await pool.query(`SELECT * FROM action WHERE client_id = $1 AND completed IS false`, [clientId]);
+
+		if (rowCount === 0) {
+			return res.status(404).json({ message: 'No actions found for this client.' });
+		}
+
+		// Return the fetched actions
+		return res.status(200).json(rows);
+	} catch (err) {
+		console.error('Error fetching actions history:', err.message);
+		return res.status(500).json({ message: 'An internal server error occurred.' });
+	}
+};
 
 
 
@@ -256,4 +277,4 @@ const updateAction = async (req, res) => {
 };
 
 
-export { getAllActions, addNewAction, getAction, updateAction, getActionsHistoryOfClient }
+export { getAllActions, addNewAction, getAction, updateAction, getActionsHistoryOfClient, getActionsNotcompletedOfClient }
