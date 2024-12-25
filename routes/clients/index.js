@@ -12,14 +12,16 @@ import assignClientAgent from "./assignClientAgent.js";
 
 const router = Router();
 
-router.use(assignClientAgent);
 router.use(authorizeUser);
+router.use(assignClientAgent);
 
 router.use(
   // authorizeManager// ,
   createSingle
 );
-router.use(authorizeManager, createMultiple);
+router.use(
+  // authorizeManager,
+  createMultiple);
 router.use(getClients);
 router.use(getClientById);
 router.use(updateClientById); // @ yousef eslam
