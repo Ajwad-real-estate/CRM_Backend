@@ -68,7 +68,7 @@ const addNewAction = async (req, res) => {
 		type_id,
 		completed = false,
 		answered = false,
-		status_id,
+		// status_id,
 		location = null,
 		comment = null,
 		date,
@@ -88,9 +88,27 @@ const addNewAction = async (req, res) => {
 
 		}
 
+		// 	const newActionQuery = `
+		//   INSERT INTO action (agent_id, client_id, unit_id, project_id, type_id, completed, answered, status_id, location, comment, date, time)
+		//   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);`;
+
+		// 	const values = [
+		// 		agent_id,
+		// 		client_id,
+		// 		unit_id,
+		// 		project_id,
+		// 		type_id,
+		// 		completed,
+		// 		answered,
+		// 		status_id,
+		// 		location,
+		// 		comment,
+		// 		date,
+		// 		time
+		// 	];
 		const newActionQuery = `
-      INSERT INTO action (agent_id, client_id, unit_id, project_id, type_id, completed, answered, status_id, location, comment, date, time)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);`;
+      INSERT INTO action (agent_id, client_id, unit_id, project_id, type_id, completed, answered, location, comment, date, time)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);`;
 
 		const values = [
 			agent_id,
@@ -100,7 +118,6 @@ const addNewAction = async (req, res) => {
 			type_id,
 			completed,
 			answered,
-			status_id,
 			location,
 			comment,
 			date,
@@ -200,78 +217,321 @@ const getActionsNotcompletedOfClient = async (req, res) => {
 
 
 // MARK: update action
+// const updateAction = async (req, res) => {
+// 	const actionId = req.params.id;
+// 	const agent_id = req.user.agentId;
+
+// 	const {
+// 		completed = false,
+// 		answered = false,
+// 		comment = null,
+// 		status_id,
+// 		unit_id = null,
+// 		project_id = null,
+// 		cancel_resaon = null,
+// 		client_nat_id = null,
+// 		reservation_amount = null,
+// 	} = req.body;
+
+// 	try {
+// 		// Validate Actionid
+// 		if (!actionId) {
+// 			s
+// 			return res.status(400).json({ message: 'Invalid Action ID' });
+// 		};
+
+// 		// Check if Action object is empty
+// 		if (!(req.body) || Object.keys(req.body).length === 0) {
+// 			return res.status(400).json({ message: 'No fields provided to update' });
+// 		};
+
+// 		const { client_id } = (await pool.query(`select client_id from action where id = $1;`, [actionId])).rows[0];
+
+
+// 		if (!(await agent_id_check(agent_id, client_id))) {
+// 			return res.status(400).json({ message: 'you are not assigned to this client, Ask for reasignment' });
+
+// 		};
+
+
+// 		// console.log(req.body);
+// 		let updateActionQuery;
+// 		let result;
+
+
+// 		// if (!status_id || status_id == 1) {
+// 		// 	updateActionQuery = ` UPDATE action
+// 		// 	SET completed = $1, answered = $2, comment = $3, status_id = $4
+// 		// 		 WHERE id = $5;`;
+// 		// 	result = await pool.query(updateActionQuery, [completed, answered, comment, status_id, actionId]);
+
+// 		// 	if (result.rowCount === 0) {
+// 		// 		return res.status(404).json({ message: 'Action not found' });
+// 		// 	}
+// 		// 	// console.log(result);
+// 		// 	return res.status(200).json({ message: 'Action updated successfully' });
+// 		// };
+
+// 		console.log("status_id")
+// 		console.log(status_id)
+
+// 		updateActionQuery = ` insert into client_agent_unit
+// 		(client_id, status_id, project_id, unit_id, cancel_reason, agent_id, reservation_amount)
+// 		values ($1, $2, $3, $4, $5, $6, $7);`;
+
+
+// 		result = await pool.query(updateActionQuery,
+// 			[client_id, status_id, project_id, unit_id, cancel_resaon, agent_id, reservation_amount]);
+
+
+// 		updateActionQuery = await pool.query('update client set nat_id = $1 where id = $2;', [client_nat_id, client_id]);
+
+
+// 		return res.status(200).json({ message: 'Action updated successfully' });
+// 	} catch (err) {
+// 		console.error('Error updating Action:', err.message);
+// 		return res.status(500).json({ message: 'Internal server error' });
+// 	}
+// };
+// const updateAction = async (req, res) => {
+// 	const actionId = req.params.id;
+// 	const agent_id = req.user.agentId;
+
+// 	const {
+// 		completed,
+// 		answered,
+// 		comment,
+// 		status_id,
+// 		unit_id = null,
+// 		project_id = null,
+// 		cancel_reason = null,
+// 		client_nat_id = null,
+// 		reservation_amount = null,
+// 	} = req.body;
+
+// 	try {
+// 		// Validate Action ID
+// 		if (!actionId) {
+// 			return res.status(400).json({ message: 'Invalid Action ID' });
+// 		}
+
+// 		// Check if the request body is empty
+// 		if (!req.body || Object.keys(req.body).length === 0) {
+// 			return res.status(400).json({ message: 'No fields provided to update' });
+// 		}
+
+// 		// Fetch client_id associated with the action
+// 		const clientResult = await pool.query(`SELECT client_id FROM action WHERE id = $1;`, [actionId]);
+// 		if (clientResult.rowCount === 0) {
+// 			return res.status(404).json({ message: 'Action not found' });
+// 		}
+// 		const { client_id } = clientResult.rows[0];
+
+// 		// Check if the agent is assigned to the client
+// 		const isAssigned = await agent_id_check(agent_id, client_id);
+// 		if (!isAssigned) {
+// 			return res.status(403).json({ message: 'You are not assigned to this client. Ask for reassignment.' });
+// 		}
+
+// 		// Insert into client_agent_unit table if status_id is provided
+// 		if (status_id) {
+// 			const insertActionQuery = `
+//                 INSERT INTO client_agent_unit (
+//                     client_id, status_id, project_id, unit_id, cancel_reason, agent_id, reservation_amount
+//                 )
+//                 VALUES ($1, $2, $3, $4, $5, $6, $7);
+//             `;
+// 			await pool.query(insertActionQuery, [
+// 				client_id,
+// 				status_id,
+// 				project_id,
+// 				unit_id,
+// 				cancel_reason,
+// 				agent_id,
+// 				reservation_amount,
+// 			]);
+// 		}
+
+// 		// Update client nat_id if provided
+// 		if (client_nat_id) {
+// 			const updateClientQuery = `UPDATE client SET nat_id = $1 WHERE id = $2;`;
+// 			await pool.query(updateClientQuery, [client_nat_id, client_id]);
+// 		}
+
+// 		return res.status(200).json({ message: 'Action updated successfully' });
+// 	} catch (err) {
+// 		console.error('Error updating action:', err.message);
+// 		return res.status(500).json({ message: 'Internal server error' });
+// 	}
+// };
+// const updateAction = async (req, res) => {
+// 	const actionId = req.params.id;
+// 	const agent_id = req.user.agentId;
+
+// 	const {
+// 		completed,
+// 		answered,
+// 		comment,
+// 		status_id,
+// 		unit_id = null,
+// 		project_id = null,
+// 		cancel_reason = null,
+// 		client_nat_id = null,
+// 		reservation_amount = null,
+// 	} = req.body;
+
+// 	try {
+// 		// Validate Action ID
+// 		if (!actionId) {
+// 			return res.status(400).json({ message: 'Invalid Action ID' });
+// 		}
+
+// 		// Check if the request body is empty
+// 		if (!req.body || Object.keys(req.body).length === 0) {
+// 			return res.status(400).json({ message: 'No fields provided to update' });
+// 		}
+
+// 		// Fetch client_id associated with the action
+// 		const clientResult = await pool.query(`SELECT client_id FROM action WHERE id = $1;`, [actionId]);
+// 		if (clientResult.rowCount === 0) {
+// 			return res.status(404).json({ message: 'Action not found' });
+// 		}
+// 		const { client_id } = clientResult.rows[0];
+
+// 		// Check if the agent is assigned to the client
+// 		const isAssigned = await agent_id_check(agent_id, client_id);
+// 		if (!isAssigned) {
+// 			return res.status(403).json({ message: 'You are not assigned to this client. Ask for reassignment.' });
+// 		}
+
+// 		// Update the action table with status_id and other fields
+// 		const updateActionQuery = `
+//             UPDATE action
+//             SET 
+//                 completed = $1,
+//                 answered = $2,
+//                 comment = $3,
+//                 status_id = $4
+//             WHERE id = $5;
+//         `;
+// 		await pool.query(updateActionQuery, [completed, answered, comment, status_id, actionId]);
+
+// 		// Insert into client_agent_unit table if required
+// 		if (status_id) {
+// 			const insertActionQuery = `
+//                 INSERT INTO client_agent_unit (
+//                     client_id, status_id, project_id, unit_id, cancel_reason, agent_id, reservation_amount
+//                 )
+//                 VALUES ($1, $2, $3, $4, $5, $6, $7);
+//             `;
+// 			await pool.query(insertActionQuery, [
+// 				client_id,
+// 				status_id,
+// 				project_id,
+// 				unit_id,
+// 				cancel_reason,
+// 				agent_id,
+// 				reservation_amount,
+// 			]);
+// 		}
+
+// 		// Update client nat_id if provided
+// 		if (client_nat_id) {
+// 			const updateClientQuery = `UPDATE client SET nat_id = $1 WHERE id = $2;`;
+// 			await pool.query(updateClientQuery, [client_nat_id, client_id]);
+// 		}
+
+// 		return res.status(200).json({ message: 'Action updated successfully' });
+// 	} catch (err) {
+// 		console.error('Error updating action:', err.message);
+// 		return res.status(500).json({ message: 'Internal server error' });
+// 	}
+// };
 const updateAction = async (req, res) => {
 	const actionId = req.params.id;
 	const agent_id = req.user.agentId;
 
 	const {
-		completed = false,
-		answered = false,
-		comment = null,
+		completed,
+		answered,
+		comment,
 		status_id,
 		unit_id = null,
 		project_id = null,
-		cancel_resaon = null,
+		cancel_reason = null,
 		client_nat_id = null,
 		reservation_amount = null,
 	} = req.body;
 
 	try {
-		// Validate Actionid
+		// Validate Action ID
 		if (!actionId) {
-			s
 			return res.status(400).json({ message: 'Invalid Action ID' });
-		};
+		}
 
-		// Check if Action object is empty
-		if (!(req.body) || Object.keys(req.body).length === 0) {
+		// Check if the request body is empty
+		if (!req.body || Object.keys(req.body).length === 0) {
 			return res.status(400).json({ message: 'No fields provided to update' });
-		};
+		}
 
-		const { client_id } = (await pool.query(`select client_id from action where id = $1;`, [actionId])).rows[0];
+		// Check if the action is already completed
+		const actionResult = await pool.query(`SELECT client_id, completed FROM action WHERE id = $1;`, [actionId]);
+		if (actionResult.rowCount === 0) {
+			return res.status(404).json({ message: 'Action not found' });
+		}
 
+		const { client_id, completed: isCompleted } = actionResult.rows[0];
 
-		if (!(await agent_id_check(agent_id, client_id))) {
-			return res.status(400).json({ message: 'you are not assigned to this client, Ask for reasignment' });
+		if (isCompleted) {
+			return res.status(400).json({ message: 'This action is already completed and cannot be updated.' });
+		}
 
-		};
+		// Check if the agent is assigned to the client
+		const isAssigned = await agent_id_check(agent_id, client_id);
+		if (!isAssigned) {
+			return res.status(403).json({ message: 'You are not assigned to this client. Ask for reassignment.' });
+		}
 
+		// Update the action table with status_id and other fields
+		const updateActionQuery = `
+            UPDATE action
+            SET 
+                completed = $1,
+                answered = $2,
+                comment = $3,
+                status_id = $4
+            WHERE id = $5;
+        `;
+		await pool.query(updateActionQuery, [completed, answered, comment, status_id, actionId]);
 
-		// console.log(req.body);
-		let updateActionQuery;
-		let result;
+		// Insert into client_agent_unit table if required
+		if (status_id) {
+			const insertActionQuery = `
+                INSERT INTO client_agent_unit (
+                    client_id, status_id, project_id, unit_id, cancel_reason, agent_id, reservation_amount
+                )
+                VALUES ($1, $2, $3, $4, $5, $6, $7);
+            `;
+			await pool.query(insertActionQuery, [
+				client_id,
+				status_id,
+				project_id,
+				unit_id,
+				cancel_reason,
+				agent_id,
+				reservation_amount,
+			]);
+		}
 
-
-		if (!status_id || status_id == 1) {
-			updateActionQuery = ` UPDATE action
-     		SET completed = $1, answered = $2, comment = $3, status_id = $4
-     			 WHERE id = $5;`;
-			result = await pool.query(updateActionQuery, [completed, answered, comment, status_id, actionId]);
-
-			if (result.rowCount === 0) {
-				return res.status(404).json({ message: 'Action not found' });
-			}
-			// console.log(result);
-			return res.status(200).json({ message: 'Action updated successfully' });
-		};
-
-
-
-		updateActionQuery = ` insert into client_agent_unit
-		(client_id, status_id, project_id, unit_id, cancel_reason, agent_id, reservation_amount)
-		values ($1, $2, $3, $4, $5, $6, $7);`;
-
-
-		result = await pool.query(updateActionQuery,
-			[client_id, status_id, project_id, unit_id, cancel_resaon, agent_id, reservation_amount]);
-
-
-		updateActionQuery = await pool.query('update client set nat_id = $1 where id = $2;', [client_nat_id, client_id]);
-
+		// Update client nat_id if provided
+		if (client_nat_id) {
+			const updateClientQuery = `UPDATE client SET nat_id = $1 WHERE id = $2;`;
+			await pool.query(updateClientQuery, [client_nat_id, client_id]);
+		}
 
 		return res.status(200).json({ message: 'Action updated successfully' });
 	} catch (err) {
-		console.error('Error updating Action:', err.message);
+		console.error('Error updating action:', err.message);
 		return res.status(500).json({ message: 'Internal server error' });
 	}
 };
