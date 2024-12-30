@@ -423,7 +423,7 @@ const getActionsNotcompletedOfClient = async (req, res) => {
 //                     client_id, status_id, project_id, unit_id, cancel_reason, agent_id, reservation_amount
 //                 )
 //                 VALUES ($1, $2, $3, $4, $5, $6, $7);
-//             `;
+//             `;d
 // 			await pool.query(insertActionQuery, [
 // 				client_id,
 // 				status_id,
