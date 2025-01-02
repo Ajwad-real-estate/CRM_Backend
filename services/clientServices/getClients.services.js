@@ -54,14 +54,43 @@ export const getClientsService = async (user, filters) => {
         values.push(7);
       }
       else if (status) {
-        conditions.push("c.status = $1");
+        conditions.push("c.status_id = $1");
         values.push(status);
       }
     } else if (roleId === 3) {
       conditions.push("c.agent_id = $1");
       values.push(agentId);
-      if (status) {
-        conditions.push("c.status = $2");
+      
+      if (status == 'New' || status == 'new') {
+        conditions.push("c.status_id = $2");
+        values.push(1);
+      }
+      else if (status == 'Qualified' || status == 'qualified') {
+        conditions.push("c.status_id = $2");
+        values.push(2);
+      }
+      else if (status == 'Reserved' || status == 'reserved') {
+        conditions.push("c.status_id = $2");
+        values.push(3);
+      }
+      else if (status == 'Done Deal' || status == 'done deal' || status == 'done_deal' || status == 'done-deal') {
+        conditions.push("c.status_id = $2");
+        values.push(4);
+      }
+      else if (status == 'Archieved' || status == 'archieved') {
+        conditions.push("c.status_id = $2");
+        values.push(5);
+      }
+      else if (status == 'Lost' || status == 'lost') {
+        conditions.push("c.status_id = $2");
+        values.push(6);
+      }
+      else if (status == 'Canceled' || status == 'canceled') {
+        conditions.push("c.status_id = $2");
+        values.push(7);
+      }
+      else if (status) {
+        conditions.push("c.status_id = $2");
         values.push(status);
       }
     }
