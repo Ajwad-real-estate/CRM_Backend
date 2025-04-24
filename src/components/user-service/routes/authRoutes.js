@@ -5,10 +5,10 @@ import {
   handleToken
 } from '../controllers/authController.js';
 
-const router = express.Router();
+const authRoutes = express.Router();
 
-router.post('/login', handleLogin);
-router.post('/logout', handleLogout);
-router.post('/token', handleToken);
+authRoutes.post('/login', handleLogin);
+authRoutes.post('/logout', handleLogout);
+authRoutes.post('/token', handleToken);
 
-export default router;
+export default authRoutes
