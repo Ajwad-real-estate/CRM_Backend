@@ -9,21 +9,21 @@ import authorizeManager from "../../components/user-service/middleware/authorize
 import updateClientById from "./routes/updateClientById.js";
 import assignClientAgent from "./routes/assignClientAgent.js";
 
-const router = Router();
+const clientRoute = Router();
 
-router.use(authorizeUser);
-router.use(assignClientAgent);
+clientRoute.use(authorizeUser);
+clientRoute.use(assignClientAgent);
 
-router.use(
+clientRoute.use(
   // authorizeManager// ,
   createSingle
 );
-router.use(
+clientRoute.use(
   // authorizeManager,
   createMultiple);
-router.use(getClients);
-router.use(getClientById);
-router.use(updateClientById); // @ yousef eslam
-router.use(authorizeManager, deleteClient);
+clientRoute.use(getClients);
+clientRoute.use(getClientById);
+clientRoute.use(updateClientById); // @ yousef eslam
+clientRoute.use(authorizeManager, deleteClient);
 
-export default router;
+export default clientRoute;
