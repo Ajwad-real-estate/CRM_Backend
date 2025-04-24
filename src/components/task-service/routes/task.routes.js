@@ -5,7 +5,7 @@ import {
   updateTask,
   deleteTask
 } from '../controllers/task.controller.js';
-import authorizeUser from '../../../middlewares/authorizeUser.js';
+import authorizeUser from '../../../components/user-service/middleware/authorizeUser.js';
 
 const router = Router();
 
