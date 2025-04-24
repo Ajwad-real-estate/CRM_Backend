@@ -2,9 +2,9 @@ import { Router } from "express";
 import { getDashboard } from "../controllers/dashboard.controller.js";
 import authorizeUser from "../../../components/user-service/middleware/authorizeUser.js";
 
-const router = Router();
+const dashboardRoute = Router();
 
-router.use(authorizeUser);
-router.get("/", getDashboard);
+dashboardRoute.use(authorizeUser);
+dashboardRoute.get("/", getDashboard);
 
-export default router;
+export default dashboardRoute;
