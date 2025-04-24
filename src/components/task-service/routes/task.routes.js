@@ -7,13 +7,13 @@ import {
 } from '../controllers/task.controller.js';
 import authorizeUser from '../../../components/user-service/middleware/authorizeUser.js';
 
-const router = Router();
+const task = Router();
 
-router.use(authorizeUser);
+task.use(authorizeUser);
 
-router.post('/', createTask);
-router.get('/', getTasks);
-router.put('/:id', updateTask);
-router.delete('/:id', deleteTask);
+task.post('/', createTask);
+task.get('/', getTasks);
+task.put('/:id', updateTask);
+task.delete('/:id', deleteTask);
 
-export default router;
+export default task;
