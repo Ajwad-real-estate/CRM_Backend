@@ -5,8 +5,8 @@ import {
   getUserDataById,
   updateUserDataById
 } from "../controllers/user.controller.js";
-import authorizeUser from "../../../../middlewares/authorizeUser.js";
-import authorizeManager from "../../../../middlewares/authorizeManager.js";
+import {authorizeUser} from "../../user-service/middleware/authorizeUser.js";
+import {authorizeManager} from "../../user-service/middleware/authorizeManager.js";
 
 const user = Router();
 

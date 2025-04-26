@@ -1,4 +1,4 @@
-import { getPool } from "../../../../db/db"
+import { getPool } from "../../../../db/db.js"
 // Client creation queries
 export const checkExistingPhoneNumbers = async (phoneNumbers) => {
     const pool = await getPool();

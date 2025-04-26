@@ -1,4 +1,4 @@
-import { getPool } from '../../../db/db';
+import { getPool } from '../../../db/db.js';
 
 export const createTask = async (taskData) => {
   const pool = await getPool();

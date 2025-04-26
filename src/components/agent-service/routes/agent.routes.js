@@ -1,5 +1,5 @@
 import express from "express";
-import { createSalesAccount } from "../controllers/salesAgent.controller.js";
+import { createSalesAccount , getSalesAgents } from "../controllers/salesAgent.controller.js";
 const agent = express.Router();
 
 agent.post("/register-sales", createSalesAccount);
