@@ -1,4 +1,4 @@
-import * as authModel from '../utils/authUtils';
+import * as authModel from '../model/authModel.js';
 
 export const handleLogin = async (req, res) => {
   try {

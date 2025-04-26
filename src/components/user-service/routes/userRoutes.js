@@ -5,15 +5,16 @@ import {
   reGemailById,
   rePassword,
   rePasswordById
-} from '../controllers/userController.js';
-import { authorizeUser, authorizeManager } from '../middlewares/authorizeUser.js';
+} from '../controller/userContoller.js';
+import { authorizeUser } from '../middleware/authorizeUser.js';
+import { authorizeManager } from '../middleware/authorizeManager.js'
 
-const router = express.Router();
+const userRoutes = express.Router();
 
-router.post('/register', authorizeManager, handleRegister);
-router.post('/regemail', authorizeUser, reGemail);
-router.post('/regemail/:id', authorizeManager, reGemailById);
-router.post('/repassword', authorizeUser, rePassword);
-router.post('/repassword/:id', authorizeManager, rePasswordById);
+userRoutes.post('/register', authorizeManager, handleRegister);
+userRoutes.post('/regemail', authorizeUser, reGemail);
+userRoutes.post('/regemail/:id', authorizeManager, reGemailById);
+userRoutes.post('/repassword', authorizeUser, rePassword);
+userRoutes.post('/repassword/:id', authorizeManager, rePasswordById);
 
-export default router;
+export default userRoutes;

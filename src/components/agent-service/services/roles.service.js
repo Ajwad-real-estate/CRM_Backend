@@ -1,5 +1,5 @@
 import { getPool } from "../../../db/db.js";
-import { fetchRoleTitleById, fetchRolesByTitles } from "../utils/roles.queries.js";
+import { fetchRoleTitleById, fetchRolesByTitles } from "../utils/queries/roles.queries.js";
 
 // Role hierarchy
 const roleHierarchy = [

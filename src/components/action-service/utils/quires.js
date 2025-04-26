@@ -1,5 +1,5 @@
 // utils/dbQueries.js
-import { getPool } from "../../../db/db";
+import { getPool } from "../../../db/db.js";
 
 // Initialize the database pool
 const initPool = async () => {

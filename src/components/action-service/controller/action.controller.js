@@ -1,5 +1,5 @@
 // controllers/actionController.js
-import actionService from '../services/action.service';
+import actionService from '../services/action.service.js';
 
 export const getAllActions = async (req, res) => {
   const agent_id = req.user.agentId;

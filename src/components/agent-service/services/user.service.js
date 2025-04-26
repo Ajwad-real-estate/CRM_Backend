@@ -1,5 +1,5 @@
-import { getPool } from "../../configs/dbConfig.js";
-import { getUserByIdQuery } from "../utils/user.queries.js";
+import { getPool } from "../../../db/db.js";
+import { getUserByIdQuery } from "../utils/queries/user.queries.js";
 
 export const getUserByIdService = async (agentId) => {
   const pool = await getPool();

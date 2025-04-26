@@ -3,7 +3,7 @@ import {
   handleLogin,
   handleLogout,
   handleToken
-} from '../controllers/authController.js';
+} from '../controller/authController.js';
 
 const authRoutes = express.Router();
 
