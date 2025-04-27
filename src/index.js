@@ -10,6 +10,7 @@ import user from './components/agent-service/routes/user.routes.js';
 import action from './components/action-service/routes/action.route.js';
 import search from './components/search-service/routes/search.route.js';
 import things from './components/things-service/routes/things.routes.js';
+import inventory from './components/inventory-service/routes/inventory.routes.js';
 
 const app = express();
 
@@ -45,10 +46,13 @@ routes.use('/search', search);
 // things service
 routes.use('/things',things)
 
-// Mount the API router under `/api`
-//app.use('/api', routes); for testing
+// inventory service
+routes.use('/inventory',inventory)
 
-// Error handling middleware
+// Mount the API router under `/api`
+// app.use('/api', routes); //for testing
+
+// // Error handling middleware
 // app.use((err, req, res, next) => {
 //   console.error(err.stack);
 //   res.status(500).json({ message: 'Something broke!' });
