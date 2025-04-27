@@ -1,235 +1,259 @@
-# Real Estate CRM System
+# 🚀 CRM Backend System
 
-A comprehensive customer relationship management system for real estate agents and managers, providing tools for client management, task tracking, action planning, and performance analytics.
+A comprehensive Customer Relationship Management backend system for sales teams, featuring multiple interconnected services for client management, task tracking, user authentication, and analytics.
 
-## Table of Contents
+## 🌟 Overview
 
-- [Overview](#overview)
-- [System Architecture](#system-architecture)
-- [Key Features](#key-features)
-- [API Endpoints](#api-endpoints)
-- [Authentication & Authorization](#authentication--authorization)
-- [Project Structure](#project-structure)
-- [Database Schema](#database-schema)
-- [Setup & Installation](#setup--installation)
-- [Environment Variables](#environment-variables)
-- [Development](#development)
+This CRM system empowers sales teams to manage clients, track interactions, assign tasks, and monitor performance through a robust set of RESTful APIs. The system follows a modular microservices architecture, with each service handling specific functionality while maintaining secure authentication and authorization across all endpoints.
 
-## Overview
+## 📋 Services
 
-This Real Estate CRM is designed to streamline agent workflow, manage client relationships, and provide actionable insights through analytics. The system supports multiple user roles with appropriate access controls and offers a complete set of features required for real estate sales operations.
+### 👥 User Service
+Handles authentication and user management functionality.
 
-## System Architecture
+- Login, logout, token refresh
+- User registration and profile management
+- Role-based access control
+- Secure password handling
 
-The project follows a modular architecture with service-based organization:
+### 👤 Client Service
+Manages all client-related operations.
 
-- **Backend Server**: Express.js application with RESTful API endpoints
-- **Database**: PostgreSQL relational database
-- **Authentication**: JWT-based authentication system
-- **Service Layer**: Separate business logic for different domains
-- **Middleware**: Role-based access control and request validation
+- Create, retrieve, update, and delete clients
+- Assign agents to clients
+- Bulk client creation
+- Filtered client searching
 
-## Key Features
+### 🎯 Task Management Service
+Provides comprehensive task tracking for agents.
 
-- **User Management**: Role-based user system (Admin, Manager, Agent)
-- **Client Management**: Complete client lifecycle management with status tracking
-- **Agent Assignment**: Assign clients to agents with round-robin distribution
-- **Task Management**: Create, assign, and track tasks with prioritization
-- **Action Tracking**: Record and manage client interactions and follow-ups
-- **Dashboard Analytics**: Role-specific performance metrics and KPIs
-- **History Tracking**: Comprehensive audit trail for client activities
+- CRUD operations for tasks
+- Task filtering by status and priority
+- Date and time scheduling
+- Agent task assignment
 
-## API Endpoints
+### 📊 Dashboard Service
+Delivers role-specific performance metrics.
 
-### Authentication
+- Agent-specific KPIs
+- Manager-level overview statistics
+- Client status analytics
+- Activity tracking
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/auth/login` | Authenticate user and receive JWT token |
-| POST | `/auth/register` | Register a new user (admin access) |
-| POST | `/auth/refresh` | Refresh authentication token |
+### 🎯 Action Service
+Tracks all agent-client interactions.
 
-### User Management
+- Log client interactions
+- Track completed vs. incomplete actions
+- View client action history
+- Update action status
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/user/profile` | Get current user profile |
-| PUT | `/user/profile` | Update current user profile |
-| GET | `/user/:id` | Get specific user by ID (manager access) |
-| PUT | `/user/:id` | Update user by ID (manager access) |
+### 🧑‍💼 Agent Service
+Manages sales agent profiles and roles.
 
-### Agent Management
+- Register new sales agents
+- Retrieve available roles
+- User profile management
+- Agent listing
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/agent/register-sales` | Register a new sales agent |
-| GET | `/agent/sales-agents` | Get list of all sales agents |
+### 🔍 Search Service
+Enables efficient data retrieval.
 
-### Role Management
+- Client search by phone number
+- Additional search capabilities
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/role/available-roles` | Get available roles based on user privilege |
+### 📊 Lookups Service
+Provides reference data for the application.
 
-### Client Management
+- Cities listing
+- Agent status types
+- Task status types
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/clients` | Create a new client |
-| GET | `/clients` | Get all clients with filtering options |
-| GET | `/clients/:id` | Get specific client by ID |
-| PUT | `/clients/:id` | Update client information |
-| DELETE | `/clients/:id` | Remove a client |
-| POST | `/clients/assign` | Assign clients to agents |
+## 🔧 Tech Stack
 
-### Task Management
+- **Backend**: Node.js with Express.js
+- **Authentication**: JWT (JSON Web Tokens)
+- **Architecture**: RESTful API, Microservices
+- **Database**: PostgreSQL (implied from configuration references)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/tasks` | Create a new task |
-| GET | `/tasks` | Get all tasks with filtering |
-| PUT | `/tasks/:id` | Update a specific task |
-| DELETE | `/tasks/:id` | Delete a specific task |
-
-### Action Management
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/actions` | Get all actions for the authenticated agent |
-| POST | `/api/actions` | Create new action |
-| GET | `/api/actions/:id` | Get specific action by ID |
-| PUT | `/api/actions/:id` | Update an action |
-| GET | `/api/actions/client/:id/history` | Get action history for a client |
-| GET | `/api/actions/client/:id/incomplete` | Get incomplete actions for a client |
-
-### Dashboard
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/dashboard` | Get role-specific dashboard metrics |
-
-## Authentication & Authorization
-
-The system implements a comprehensive security model:
-
-- **JWT Authentication**: Secure token-based authentication
-- **Role-Based Access**: Different permission levels for Admin, Manager, and Agent roles
-- **Resource Protection**: Users can only access resources they are authorized for
-- **Middleware Guards**: `authorizeUser` and `authorizeManager` middleware protect routes
-
-## Project Structure
+## 🏗️ Project Structure
 
 ```
-src/
-├── configs/
-│   └── dbConfig.js                # Database configuration
-├── controllers/
-│   ├── actionController.js        # Action-related controllers
-│   ├── agentController.js         # Agent management controllers
-│   ├── authController.js          # Authentication controllers
-│   ├── clientController.js        # Client management controllers
-│   ├── roleController.js          # Role management controllers
-│   ├── taskController.js          # Task management controllers
-│   └── userController.js          # User management controllers
-├── middlewares/
-│   ├── authorizeManager.js        # Manager-level authorization middleware
-│   └── authorizeUser.js           # User-level authorization middleware
-├── models/
-│   ├── authModel.js               # Authentication data models
-│   └── userModel.js               # User data models
-├── routes/
-│   ├── actionRoutes.js            # Action API routes
-│   ├── agentRoutes.js             # Agent management routes
-│   ├── authRoutes.js              # Authentication routes
-│   ├── clientRoutes.js            # Client management routes
-│   ├── dashboardRoutes.js         # Dashboard routes
-│   ├── roleRoutes.js              # Role management routes
-│   ├── taskRoutes.js              # Task management routes
-│   └── userRoutes.js              # User management routes
-├── services/
-│   ├── action/                    # Action management services
-│   ├── client/                    # Client management services
-│   │   ├── createClient.services.js
-│   │   ├── getClients.services.js
-│   │   ├── getClientById.services.js
-│   │   ├── updateClientById.services.js
-│   │   ├── deleteClientById.services.js
-│   │   └── assignClientAgent.services.js
-│   ├── dashboard/                 # Dashboard services
+├── components/
+│   ├── user-service/
+│   │   ├── routes/
 │   │   ├── controllers/
-│   │   │   ├── dashboard.controller.js
-│   │   │   ├── agentDashboard.controller.js
-│   │   │   └── managerDashboard.controller.js
-│   │   ├── queries/
-│   │   │   └── dashboard.queries.js
-│   │   └── routes/
-│   │       └── dashboard.route.js
-│   ├── role/                      # Role management services
-│   ├── task/                      # Task management services
-│   └── user/                      # User management services
-├── utils/
-│   ├── authUtils.js               # Authentication utilities
-│   ├── dashboardUtils.js          # Dashboard helper functions
-│   ├── dbQueries.js               # Database query functions
-│   ├── helpers.js                 # General helper functions
-│   └── queries.js                 # SQL query templates
-└── server.js                      # Main application entry point
+│   │   ├── services/
+│   │   └── validators/
+│   ├── client-service/
+│   ├── task-service/
+│   ├── dashboard-service/
+│   ├── agent-service/
+│   ├── action-service/
+│   ├── search-service/
+│   └── things-service/
+├── configs/
+│   └── dbConfig.js
+├── common/
+│   └── errors.js
+├── middlewares/
+│   ├── authorizeUser.js
+│   └── authorizeManager.js
+└── app.js
 ```
 
-## Database Schema
+## 🔒 Authentication & Authorization
 
-The system uses the following core tables:
+The system uses token-based authentication with JWT:
+- `authorizeUser` middleware ensures valid authentication
+- `authorizeManager` middleware provides role-based access control
+- Login generates access and refresh tokens
+- Token refresh mechanism for maintained sessions
 
-- **users**: User accounts with authentication details
-- **roles**: User role definitions and privileges
-- **agents**: Sales agent information and targets
-- **clients**: Client information and status
-- **client_agent_unit**: Relationship between clients, agents, and properties
-- **actions**: Client interactions and follow-ups
-- **tasks**: Agent tasks and assignments
-- **phone_numbers**: Client contact information
+## 🚦 API Routes
 
-## Setup & Installation
+### Authentication Routes (`/api/auth`)
+| Endpoint         | Method | Description                |
+|------------------|--------|----------------------------|
+| `/auth/login`    | POST   | User login                 |
+| `/auth/logout`   | POST   | User logout                |
+| `/auth/token`    | POST   | Refresh access token       |
+
+### User Routes (`/api/auth`)
+| Endpoint           | Method | Description               |
+|--------------------|--------|---------------------------|
+| `/auth/register`   | POST   | Register new user         |
+| `/auth/regemail`   | POST   | Update own email          |
+| `/auth/repassword` | POST   | Update own password       |
+
+### Client Routes (`/api/clients`)
+| Endpoint                  | Method | Description                   |
+|---------------------------|--------|-------------------------------|
+| `/clients/assign`         | PUT    | Assign agents to clients      |
+| `/clients/bulk`           | POST   | Create multiple clients       |
+| `/clients/createClient`   | POST   | Create single client          |
+| `/clients/:clientId`      | GET    | Get client by ID              |
+| `/clients/:clientId`      | PUT    | Update client                 |
+| `/clients/:clientId`      | DELETE | Delete client                 |
+| `/clients/getClient`      | GET    | Get filtered clients          |
+
+### Task Routes (`/api/tasks`)
+| Endpoint       | Method | Description              |
+|----------------|--------|--------------------------|
+| `/tasks`       | POST   | Create new task          |
+| `/tasks`       | GET    | Get all tasks (filtered) |
+| `/tasks/:id`   | PUT    | Update task              |
+| `/tasks/:id`   | DELETE | Delete task              |
+
+### Dashboard Route (`/api/dashboard`)
+| Endpoint      | Method | Description                    |
+|---------------|--------|--------------------------------|
+| `/dashboard`  | GET    | Get role-based dashboard data  |
+
+### Agent Routes (`/api/salesAgent`)
+| Endpoint                     | Method | Description                |
+|------------------------------|--------|----------------------------|
+| `/salesAgent/register-sales` | POST   | Register sales agent       |
+| `/salesAgent/sales-agents`   | GET    | List all sales agents      |
+
+### Role Routes (`/api/role`)
+| Endpoint                 | Method | Description                |
+|--------------------------|--------|----------------------------|
+| `/role/available-roles`  | GET    | Get all available roles    |
+
+### User Management Routes (`/api/salesAgent/user`)
+| Endpoint                  | Method | Description                   |
+|---------------------------|--------|-------------------------------|
+| `/salesAgent/user/profile`| GET    | Get user profile              |
+| `/salesAgent/user/profile`| PUT    | Update user profile           |
+| `/salesAgent/user/:id`    | GET    | Get user by ID (admin)        |
+| `/salesAgent/user/:id`    | PUT    | Update user by ID (admin)     |
+
+### Action Routes (`/api/actions`)
+| Endpoint                                    | Method | Description                      |
+|---------------------------------------------|--------|----------------------------------|
+| `/actions/`                                 | GET    | Get all actions                  |
+| `/actions/`                                 | POST   | Create new action                |
+| `/actions/:id`                              | GET    | Get action by ID                 |
+| `/actions/:id`                              | PUT    | Update action                    |
+| `/actions/actionsHistoryOfClient/:id`       | GET    | Get client's completed actions   |
+| `/actions/actionsNotcompletedOfClient/:id`  | GET    | Get client's pending actions     |
+
+### Search Routes (`/api/search`)
+| Endpoint              | Method | Description                   |
+|-----------------------|--------|-------------------------------|
+| `/search/phone/:phone`| GET    | Search clients by phone       |
+
+### Lookup Routes (`/api/things`)
+| Endpoint                | Method | Description                  |
+|-------------------------|--------|------------------------------|
+| `/things/city`          | GET    | Get available cities         |
+| `/things/agent-statuses`| GET    | Get agent status types       |
+| `/things/task-statuses` | GET    | Get task status types        |
+
+## 🔧 Installation & Setup
+
+### Prerequisites
+- Node.js (v14+)
+- PostgreSQL database
+
+### Steps
 
 1. Clone the repository
-2. Install dependencies:
+   ```
+   git clone https://github.com/your-username/crm-backend.git
+   cd crm-backend
+   ```
+
+2. Install dependencies
    ```
    npm install
    ```
-3. Configure database connection in `.env` file
-4. Run database migrations (if applicable)
-5. Start the server:
+
+3. Configure environment variables
+   ```
+   # Create .env file with these variables
+   DB_HOST=localhost
+   DB_USER=postgres
+   DB_PASSWORD=yourpassword
+   DB_NAME=crm_database
+   JWT_SECRET=your_jwt_secret_key
+   JWT_REFRESH_SECRET=your_refresh_secret_key
+   PORT=3000
+   ```
+
+4. Initialize the database
+   ```
+   # Run database migration script (if available)
+   npm run migrate
+   ```
+
+5. Start the server
    ```
    npm start
    ```
 
-## Environment Variables
+## 🛠️ Error Handling
 
-Create a `.env` file with the following variables:
-```
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=yourdbname
-DB_USER=yourdbuser
-DB_PASSWORD=yourpassword
-PORT=3000
-JWT_SECRET=yoursecretkey
-JWT_EXPIRY=1d
+All API endpoints return consistent error responses with appropriate HTTP status codes:
+
+```json
+{
+  "message": "Descriptive error message"
+}
 ```
 
-## Development
+Common status codes:
+- `400` - Bad Request (validation errors)
+- `401` - Unauthorized (authentication failures)
+- `403` - Forbidden (insufficient permissions)
+- `404` - Not Found (resource doesn't exist)
+- `500` - Internal Server Error
 
-To run in development mode with hot reloading:
-```
-npm run dev
-```
+## 🔐 Security Features
 
-## Error Handling
-
-The API implements comprehensive error handling:
-
-- **Input Validation**: Validates required fields before processing
-- **Database Errors**: Catches and processes database-related errors
-- **Not Found Handling**: Returns appropriate status when resources aren't found
-- **Transaction Safety**: Uses database transactions to ensure data integrity
-- **Standardized Error Responses**: Consistent error format across all endpoints
+- JWT-based authentication
+- Role-based access control
+- Password encryption
+- Secure token management
+- Request validation
