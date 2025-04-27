@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import express from 'express';
 import userRoutes from './src/components/user-service/routes/userRoutes.js';
 import authRoutes from './src/components/user-service/routes/authRoutes.js';
 import clientRoute from './src/components/client-service/routes/client.route.js';
@@ -35,35 +34,36 @@ app.use(express.json());
 // API routes
 const routes = express.Router();
 
-routes.use('/api/auth', authRoutes);
-routes.use('/api/users', userRoutes);
+routes.use('/auth', authRoutes);
+routes.use('/users', userRoutes);
 
 // client service
-routes.use('/api/clients', clientRoute);
+routes.use('/clients', clientRoute);
 
 // task service
-routes.use('/api/tasks', task);
+routes.use('/tasks', task);
 
 // dashboard service
-routes.use('/api/dashboard', dashboardRoute);
+routes.use('/dashboard', dashboardRoute);
 
 // agent service
-routes.use('/api/salesAgent', agent);
-routes.use('/api/role', role);
-routes.use('/api/salesAgent/user', user);
+routes.use('/salesAgent', agent);
+routes.use('/role', role);
+routes.use('/salesAgent/user', user);
 
 // action service
-routes.use('/api/actions', action);
+routes.use('/actions', action);
 
 // search service
-routes.use('/api/search', search);
+routes.use('/search', search);
 
 // things service
-routes.use('/api/things',things)
+routes.use('/things',things)
 
 // inventory service
-routes.use('/api/inventory',inventory)
+routes.use('/inventory',inventory)
 
+app.use('/api',routes)
 
 // 404 handler
 app.all("*", (req, res) => {
