@@ -13,7 +13,7 @@ This service handles authentication and user management functionality for the CR
 
 ---
 
-## 🔐 Authentication Routes (`/auth`)
+## 🔐 Authentication Routes (`api/auth`)
 
 | Endpoint         | Method | Description                | Body Params                     |
 |------------------|--------|----------------------------|----------------------------------|
@@ -23,13 +23,16 @@ This service handles authentication and user management functionality for the CR
 
 ---
 
-## 👤 User Routes (`/users`)
+## 👤 User Routes (`api/users`)
+
+| Endpoint         | Method | Description                | Body Params                     |
+|------------------|--------|----------------------------|----------------------------------|
+| `/users/register`| POST   | Register a new user        | Full user object                |
 
 ### 🔑 Manager-only Routes
 
 | Endpoint                | Method | Description                              | Middleware         | Body Params                            |
 |-------------------------|--------|------------------------------------------|---------------------|-----------------------------------------|
-| `/users/register`       | POST   | Register a new user                      | `authorizeManager` | Full user object                        |
 | `/users/regemail/:id`   | POST   | Update user email by ID                 | `authorizeManager` | `{ newEmail }`                          |
 | `/users/repassword/:id` | POST   | Update password by ID                   | `authorizeManager` | `{ newPassword }`                       |
 

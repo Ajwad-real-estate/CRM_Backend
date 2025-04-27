@@ -1,85 +1,59 @@
-# Actions Management API
+# 🎯 Action Service - CRM Backend
 
-This repository contains the backend code for managing actions within a real estate CRM system. The API allows agents to create, update, and track various types of actions related to clients and properties.
+This service handles actions performed by sales agents in the CRM system, such as logging client interactions, completing tasks, and tracking action history.  
+It secures all endpoints using user authentication and authorization.
 
-## Project Structure
+---
 
-The project follows a structured architecture pattern:
+## 📦 Tech Stack
 
-```
-├── configs/
-│   └── dbConfig.js         # Database configuration
-├── controllers/
-│   └── actionController.js # HTTP request handlers
-├── routes/
-│   └── actionRoutes.js     # API route definitions
-├── services/
-│   └── actionService.js    # Business logic
-├── utils/
-│   ├── dashboardUtils.js   # Utility functions
-│   └── dbQueries.js        # Database query functions
-└── server.js               # Main application entry point
-```
+- Node.js
+- Express.js
+- JWT Authentication Middleware
+- Modular Controller & Service Structure
 
-## Key Features
+---
 
-- **Role-based access control**: Agents can only access clients assigned to them, with special permissions for admin roles
-- **Action tracking**: Create and manage various types of client actions
-- **History management**: View complete history of client actions
-- **Status updates**: Update action statuses with related information
+## 📄 Action Routes (`api/action`)
 
-## API Endpoints
+| Endpoint                                  | Method | Description                                  | Body Params |
+|-------------------------------------------|--------|----------------------------------------------|-------------|
+| `/action/`                                | GET    | Retrieve all actions for the authenticated agent | None        |
+| `/action/`                                | POST   | Add a new action                            | Action details in JSON |
+| `/action/:id`                             | GET    | Retrieve a specific action by ID            | None        |
+| `/action/:id`                             | PUT    | Update an existing action by ID             | Update fields in JSON |
+| `/action/actionsHistoryOfClient/:id`      | GET    | Retrieve all completed actions history of a specific client | None |
+| `/action/actionsNotcompletedOfClient/:id` | GET    | Retrieve all incomplete actions of a specific client | None |
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/actions` | Get all actions for the authenticated agent |
-| POST | `/api/actions` | Create new action |
-| GET | `/api/actions/:id` | Get specific action by ID |
-| PUT | `/api/actions/:id` | Update an action |
-| GET | `/api/actions/client/:id/history` | Get action history for a specific client |
-| GET | `/api/actions/client/:id/incomplete` | Get incomplete actions for a specific client |
+---
 
-## Authentication
+## 📚 Controller Functions
 
-All endpoints require authentication. The API uses a middleware that extracts the agent's information from the authentication token.
+All endpoints are handled through `action.controller.js`:
 
-## Database Schema
+- `getAllActions()` → Returns all actions assigned to the authenticated agent.
+- `addNewAction()` → Adds a new action with proper agent-client authorization.
+- `getAction(id)` → Fetches a single action by its ID.
+- `updateAction(id)` → Updates action details if the action is not yet completed.
+- `getActionsHistoryOfClient(id)` → Fetches all completed actions of a specific client.
+- `getActionsNotcompletedOfClient(id)` → Fetches all ongoing (not completed) actions for a specific client.
 
-The API interacts with the following main tables:
-- `action`: Stores action details
-- `client`: Stores client information
-- `agent`: Stores agent information
-- `client_agent_unit`: Maps relationships between clients, agents, and units/projects
+---
 
-## Setup & Installation
+## 🔒 Authentication & Authorization
 
-1. Clone the repository
-2. Install dependencies:
-   ```
-   npm install
-   ```
-3. Configure database connection in `configs/dbConfig.js`
-4. Start the server:
-   ```
-   npm start
-   ```
+All routes are protected using `authorizeUser` middleware:
 
-## Environment Variables
+- Requires a valid JWT token.
+- Access is scoped to the authenticated agent (e.g., actions linked to their own clients).
 
-Create a `.env` file with the following variables:
-```
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=yourdbname
-DB_USER=yourdbuser
-DB_PASSWORD=yourpassword
-PORT=3000
-JWT_SECRET=yoursecretkey
-```
+---
 
-## Development
+## 🛠 Error Handling
 
-To run in development mode with hot reloading:
-```
-npm run dev
-```
+All endpoints return errors consistently in the format:
+
+```json
+{
+  "message": "Descriptive error message here"
+}

@@ -14,7 +14,7 @@ action.get('/', actionController.getAllActions);
 action.post('/', actionController.addNewAction);
 action.get('/:id', actionController.getAction);
 action.put('/:id', actionController.updateAction);
-action.get('/client/:id/history', actionController.getActionsHistoryOfClient);
-action.get('/client/:id/incomplete', actionController.getActionsNotcompletedOfClient);
+action.get('/actionsHistoryOfClient/:id', actionController.getActionsHistoryOfClient);
+action.get('/actionsNotcompletedOfClient/:id', actionController.getActionsNotcompletedOfClient);
 
 export default action;
