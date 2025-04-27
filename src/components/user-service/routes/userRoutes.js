@@ -11,7 +11,7 @@ import { authorizeManager } from '../middleware/authorizeManager.js'
 
 const userRoutes = express.Router();
 
-userRoutes.post('/register', authorizeManager, handleRegister);
+userRoutes.post('/register', handleRegister);
 userRoutes.post('/regemail', authorizeUser, reGemail);
 userRoutes.post('/regemail/:id', authorizeManager, reGemailById);
 userRoutes.post('/repassword', authorizeUser, rePassword);
