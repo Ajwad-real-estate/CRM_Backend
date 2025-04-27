@@ -16,46 +16,46 @@ const app = express();
 app.use(express.json());
 
 // Create a new router
-const apiRouter = express.Router();
+const routes = express.Router();
 
 // user service
-apiRouter.use('/auth', authRoutes);
-apiRouter.use('/users', userRoutes);
+routes.use('/auth', authRoutes);
+routes.use('/auth', userRoutes);
 
 // client service
-apiRouter.use('/clients', clientRoute);
+routes.use('/clients', clientRoute);
 
 // task service
-apiRouter.use('/tasks', task);
+routes.use('/tasks', task);
 
 // dashboard service
-apiRouter.use('/dashboard', dashboardRoute);
+routes.use('/dashboard', dashboardRoute);
 
 // agent service
-apiRouter.use('/salesAgent', agent);
-apiRouter.use('/role', role);
-apiRouter.use('/salesAgent/user', user);
+routes.use('/salesAgent', agent);
+routes.use('/role', role);
+routes.use('/salesAgent/user', user);
 
 // action service
-apiRouter.use('/actions', action);
+routes.use('/actions', action);
 
 // search service
-apiRouter.use('/search', search);
+routes.use('/search', search);
 
 // things service
-apiRouter.use('/things',things)
+routes.use('/things',things)
 
 // Mount the API router under `/api`
-app.use('/api', apiRouter);
+//app.use('/api', routes); for testing
 
 // Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: 'Something broke!' });
-});
+// app.use((err, req, res, next) => {
+//   console.error(err.stack);
+//   res.status(500).json({ message: 'Something broke!' });
+// });
 
-app.listen(3000, () => {
-  console.log("app listens on port 3000");
-});
+// app.listen(3000, () => {
+//   console.log("app listens on port 3000");
+// });
 
-export default app;
+export default routes;
