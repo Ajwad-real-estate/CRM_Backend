@@ -33,6 +33,7 @@ app.use(cors({
 app.use(express.json());
 
 // API routes
+const routes = express.Router();
 
 routes.use('/api/auth', authRoutes);
 routes.use('/api/users', userRoutes);
