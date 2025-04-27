@@ -14,7 +14,7 @@ All user-related operations are secured using role-based authentication.
 
 ---
 
-## 📄 Sales Agent Routes (`api/agent`)
+## 📄 Sales Agent Routes (`/agent`)
 
 | Endpoint             | Method | Description                          | Body Params               |
 |----------------------|--------|--------------------------------------|----------------------------|
@@ -28,7 +28,7 @@ All user-related operations are secured using role-based authentication.
 
 ---
 
-## 📄 Roles Routes (`api/role`)
+## 📄 Roles Routes (`/role`)
 
 | Endpoint                 | Method | Description                           | Body Params |
 |---------------------------|--------|---------------------------------------|-------------|
