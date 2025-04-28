@@ -1,4 +1,3 @@
-import express from 'express';
 import userRoutes from './components/user-service/routes/userRoutes.js';
 import authRoutes from './components/user-service/routes/authRoutes.js';
 import clientRoute from './components/client-service/routes/client.route.js';
@@ -11,17 +10,15 @@ import action from './components/action-service/routes/action.route.js';
 import search from './components/search-service/routes/search.route.js';
 import things from './components/things-service/routes/things.routes.js';
 import inventory from './components/inventory-service/routes/inventory.routes.js';
+import { Router } from 'express';
 
-const app = express();
-
-app.use(express.json());
 
 // Create a new router
-const routes = express.Router();
+const routes = Router();
 
 // user service
 routes.use('/auth', authRoutes);
-routes.use('/auth', userRoutes);
+routes.use('/users', userRoutes);
 
 // client service
 routes.use('/clients', clientRoute);
@@ -50,9 +47,9 @@ routes.use('/things',things)
 routes.use('/inventory',inventory)
 
 // Mount the API router under `/api`
-// app.use('/api', routes); //for testing
+//app.use('/api', routes); //for testing
 
-// // Error handling middleware
+// Error handling middleware
 // app.use((err, req, res, next) => {
 //   console.error(err.stack);
 //   res.status(500).json({ message: 'Something broke!' });
