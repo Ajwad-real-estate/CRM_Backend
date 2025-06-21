@@ -11,8 +11,8 @@ clientRoute.put("/assign", controller.assignClientAgent);
 clientRoute.post("/bulk", controller.createMultipleClients);
 clientRoute.post("/createClient", controller.createClient);
 clientRoute.delete("/:clientId",authorizeManager ,controller.deleteClientById);
-clientRoute.get("/:clientId", controller.getClientById);
 clientRoute.get("/getClient", controller.getClients);
+clientRoute.get("/:clientId", controller.getClientById);
 clientRoute.put("/:clientId", controller.updateClientById); //@yousef eslam 
 
 export default clientRoute
