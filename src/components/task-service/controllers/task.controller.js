@@ -1,4 +1,5 @@
 import * as taskService from "../services/task.service.js";
+import { getPool } from "../../../db/db.js";
 
 export const createTask = async (req, res) => {
   try {
@@ -18,26 +19,9 @@ export const createTask = async (req, res) => {
 // checked
 export const getAllTasks = async (req, res) => {
   const agent_id = req.user.agentId;
-
   try {
-    const allTaskQuery = await pool.query(
-      `SELECT * FROM task where agent_id = $1 and status_id not in (3,4,5);`,
-      [agent_id]
-    );
-
-    const allTasks = allTaskQuery.rows;
-
-    const allActionQuery = await pool.query(
-      `SELECT * FROM action where agent_id = $1 and  not completed;`,
-      [agent_id]
-    );
-
-    const allActions = allActionQuery.rows;
-
-    const tasks = {
-      allTasks: allTasks,
-      allActions: allActions,
-    };
+    
+    const tasks = await taskService.getAllTasksAndActions(agent_id)
 
     return res.status(200).json(tasks);
   } catch (err) {

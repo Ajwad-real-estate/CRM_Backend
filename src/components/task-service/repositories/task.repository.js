@@ -15,6 +15,30 @@ export const createTask = async (taskData) => {
   return rows[0];
 };
 
+export const getAllTasksAndActions = async (agent_id) => {
+  const pool = await getPool()
+  const allTaskQuery = await pool.query(
+    `SELECT * FROM task where agent_id = $1 and status_id not in (3,4,5);`,
+    [agent_id]
+  );
+
+  const allTasks = allTaskQuery.rows;
+
+  const allActionQuery = await pool.query(
+    `SELECT * FROM action where agent_id = $1 and  not completed;`,
+    [agent_id]
+  );
+
+  const allActions = allActionQuery.rows;
+
+  const tasks = {
+    allTasks: allTasks,
+    allActions: allActions,
+  };
+
+  return tasks
+}
+
 export const getTasksByAgent = async (agentId, filters) => {
   const pool = await getPool();
   

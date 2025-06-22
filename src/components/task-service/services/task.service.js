@@ -10,6 +10,10 @@ export const getTasks = async (agentId, filters = {}) => {
   return await taskRepository.getTasksByAgent(agentId, filters);
 };
 
+export const getAllTasksAndActions = async(agent_id) => {
+  return await taskRepository.getAllTasksAndActions(agent_id)
+}
+
 export const updateTask = async (taskId, agentId, updates) => {
   // Verify task exists and belongs to agent
   const task = await taskRepository.getTaskById(taskId);
