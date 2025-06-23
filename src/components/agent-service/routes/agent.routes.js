@@ -3,11 +3,11 @@ import {
   createSalesAccount,
   getSalesAgents,
 } from "../controllers/salesAgent.controller.js";
-import { authorizeManager } from "../../user-service/middleware/authorizeManager.js";
+import { authorizeUser } from "../../user-service/middleware/authorizeUser.js";
 const agent = express.Router();
 
-agent.post("/register-sales", createSalesAccount);
+agent.post("/register-sales",authorizeUser ,createSalesAccount);
 
-agent.get("/sales-agents", authorizeManager, getSalesAgents);
+agent.get("/sales-agents", authorizeUser, getSalesAgents);
 
 export default agent;
