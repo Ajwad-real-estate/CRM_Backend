@@ -26,34 +26,72 @@ services/dashboard/
 
 ## API Endpoints
 
-### GET /dashboard
-Returns dashboard data based on the authenticated user's role.
+### 1. GET /dashboard
+- **Description:** Returns dashboard data based on the authenticated user's role (Agent or Manager).
+- **Authentication:** Requires Authorization header with a valid JWT (Bearer Token).
+- **Input:**
+  - Header: `Authorization: Bearer <token>`
+- **Output:**
+  - If the user is an Agent:
+    ```json
+    {
+      "target": 100,
+      "followUpCount": 24,
+      "meetingCount": 12,
+      "followMeetCount": 8,
+      "emailCount": 35,
+      "newClientsCount": 15,
+      "qualifiedClientsCount": 10,
+      "reservedClientsCount": 5,
+      "doneClientsCount": 3
+    }
+    ```
+  - If the user is a Manager:
+    ```json
+    {
+      "target": 100,
+      "followUpCount": 24,
+      "meetingCount": 12,
+      "followMeetCount": 8,
+      "emailCount": 35,
+      "newClientsCount": 15,
+      "newAssignedClientsCount": 8,
+      "qualifiedClientsCount": 10,
+      "reservedClientsCount": 5,
+      "doneClientsCount": 3
+    }
+    ```
 
-**Authentication:** Required
-**Authorization:** All roles with valid JWT
+### 2. GET /dashboard/salesDashboard/:id
+- **Description:** Returns dashboard data for a specific sales agent by ID.
+- **Authentication:** No authentication required (according to current code), but it is recommended to add authentication.
+- **Input:**
+  - URL Parameter: `id` (Sales agent ID)
+- **Output:**
+  ```json
+  {
+    "target": 100,
+    "followUpCount": 24,
+    "meetingCount": 12,
+    "followMeetCount": 8,
+    "emailCount": 35,
+    "newClientsCount": 15,
+    "qualifiedClientsCount": 10,
+    "reservedClientsCount": 5,
+    "doneClientsCount": 3
+  }
+  ```
 
-**Response:**
-```json
-{
-  "target": 100,
-  "followUpCount": 24,
-  "meetingCount": 12,
-  "followMeetCount": 8,
-  "emailCount": 35,
-  "newClientsCount": 15,
-  "qualifiedClientsCount": 10,
-  "reservedClientsCount": 5,
-  "doneClientsCount": 3
-}
-```
+## Authentication & Authorization
+- All endpoints (except `/dashboard/salesDashboard/:id`) require a valid JWT token in the header:
+  - Example: `Authorization: Bearer <your_token>`
+- Token is verified using the `authorizeUser` middleware. Requests without a valid token will be rejected.
 
-Manager response includes additional field:
-```json
-{
-  "newAssignedClientsCount": 8
-  // ...other fields
-}
-```
+## Error Handling
+- **401 Unauthorized:** If the token is missing or invalid.
+- **403 Forbidden:** If the token is not authorized.
+- **500 Internal Server Error:** Server error.
+- **404 Not Found:** If no data is found for the sales agent in `/salesDashboard/:id`.
 
 ## Database Schema
 
@@ -88,9 +126,3 @@ router.use("/dashboard", dashboardRoute);
 - The service uses middleware (`authorizeUser`) to ensure all requests are authenticated
 - User roles determine which dashboard view is displayed (agent or manager)
 - Database queries are parameterized to prevent SQL injection
-
-## Error Handling
-
-The service includes error handling and will return appropriate HTTP status codes:
-- 200: Successful response with dashboard data
-- 500: Server error with a generic error message
