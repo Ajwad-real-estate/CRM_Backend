@@ -1,10 +1,12 @@
 import { Router } from "express";
 import { getDashboard } from "../controllers/dashboard.controller.js";
 import {authorizeUser} from "../../../components/user-service/middleware/authorizeUser.js";
+import { getSalesDashboard } from "../controllers/salesDashboard.controller.js";
 
 const dashboardRoute = Router();
 
-dashboardRoute.use(authorizeUser);
-dashboardRoute.get("/", getDashboard);
+dashboardRoute.get("/", authorizeUser, getDashboard);
+
+dashboardRoute.get("/salesDashboard/:id",getSalesDashboard);
 
 export default dashboardRoute;
