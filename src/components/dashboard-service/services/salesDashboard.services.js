@@ -1,8 +1,10 @@
 import { getPool } from "../../../db/db.js";
 import { salesQueries } from "../queries/salesDashboard.quires.js";
 
-export const prepareSalesDashboard = async (id) => {
+export const prepareSalesDashboard = async (salesID,managerID) => {
     const pool = await getPool()
+    console.log(salesQueries.target);
+    
     try {
         const [
           targetResult,
@@ -15,19 +17,19 @@ export const prepareSalesDashboard = async (id) => {
           reservedClientsResult,
           doneClientsResult,
         ] = await Promise.all([
-          pool.query(salesQueries.target, [id]),
-          pool.query(salesQueries.followUp, [id]),
-          pool.query(salesQueries.meeting, [id]),
-          pool.query(salesQueries.followMeet, [id]),
-          pool.query(salesQueries.email, [id]),
-          pool.query(salesQueries.newClients, [id]),
-          pool.query(salesQueries.qualifiedClients, [id]),
-          pool.query(salesQueries.reservedClients, [id]),
-          pool.query(salesQueries.doneClients, [id]),
+          pool.query(salesQueries.target, [salesID,managerID]),
+          pool.query(salesQueries.followUp, [salesID,managerID]),
+          pool.query(salesQueries.meeting, [salesID,managerID]),
+          pool.query(salesQueries.followMeet, [salesID,managerID]),
+          pool.query(salesQueries.email, [salesID,managerID]),
+          pool.query(salesQueries.newClients, [salesID,managerID]),
+          pool.query(salesQueries.qualifiedClients, [salesID,managerID]),
+          pool.query(salesQueries.reservedClients, [salesID,managerID]),
+          pool.query(salesQueries.doneClients, [salesID,managerID]),
         ]);
 
         const dashboardData = {
-            target: parseInt(targetResult.rows[0].target, 10),
+            target: parseInt(targetResult.rows[0]?.target ?? '0', 10),
             followUpCount: parseInt(followUpResult.rows[0].count, 10),
             meetingCount: parseInt(meetingResult.rows[0].count, 10),
             followMeetCount: parseInt(followMeetResult.rows[0].count, 10),
@@ -41,6 +43,6 @@ export const prepareSalesDashboard = async (id) => {
         return dashboardData
     }
     catch(error) {
-        throw new Error(error.message);
+        throw new Error(error);
     }     
 };

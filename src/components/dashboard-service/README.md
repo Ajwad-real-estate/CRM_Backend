@@ -64,8 +64,9 @@ services/dashboard/
 
 ### 2. GET /dashboard/salesDashboard/:id
 - **Description:** Returns dashboard data for a specific sales agent by ID.
-- **Authentication:** No authentication required (according to current code), but it is recommended to add authentication.
+- **Authentication:** Requires Authorization header with a valid JWT (Bearer Token) for managers.
 - **Input:**
+  - Header: `Authorization: Bearer <token>` (Manager role required)
   - URL Parameter: `id` (Sales agent ID)
 - **Output:**
   ```json
@@ -83,13 +84,14 @@ services/dashboard/
   ```
 
 ## Authentication & Authorization
-- All endpoints (except `/dashboard/salesDashboard/:id`) require a valid JWT token in the header:
+- All endpoints require a valid JWT token in the header:
   - Example: `Authorization: Bearer <your_token>`
+- `/dashboard/salesDashboard/:id` is restricted to users with the Manager role.
 - Token is verified using the `authorizeUser` middleware. Requests without a valid token will be rejected.
 
 ## Error Handling
 - **401 Unauthorized:** If the token is missing or invalid.
-- **403 Forbidden:** If the token is not authorized.
+- **403 Forbidden:** If the token is not authorized or the user does not have the required role.
 - **500 Internal Server Error:** Server error.
 - **404 Not Found:** If no data is found for the sales agent in `/salesDashboard/:id`.
 
