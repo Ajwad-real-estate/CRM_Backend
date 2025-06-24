@@ -8,6 +8,6 @@ const dashboardRoute = Router();
 
 dashboardRoute.get("/", authorizeUser, getDashboard);
 
-dashboardRoute.get("/salesDashboard/:id",authorizeManager,getSalesDashboard);
+dashboardRoute.get("/salesDashboard/:id",authorizeUser,getSalesDashboard);
 
 export default dashboardRoute;

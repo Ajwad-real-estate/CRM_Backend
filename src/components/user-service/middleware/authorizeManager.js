@@ -6,6 +6,7 @@ export const authorizeManager = async (req, res, next) => {
       if (req.user.roleId !== 2) {
         return res.sendStatus(403);
       }
+      
       next();
     });
   } catch (error) {
