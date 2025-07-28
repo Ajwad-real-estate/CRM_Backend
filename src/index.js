@@ -12,6 +12,10 @@ import things from './components/things-service/routes/things.routes.js';
 import inventory from './components/inventory-service/routes/inventory.routes.js';
 import { Router } from 'express';
 
+app.use(cors({
+  origin: 'https://ajw-ad.netlify.app',
+  credentials: true, 
+}));
 
 // Create a new router
 const routes = Router();
