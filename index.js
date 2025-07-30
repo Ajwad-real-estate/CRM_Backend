@@ -6,6 +6,7 @@ import routes from "./src/index.js";
 const app = express();
 
 const allowedOrigins = [
+  "https://ajw-ad.netlify.app",
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:4173",
